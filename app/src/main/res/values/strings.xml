@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">开心段子</string>
+    <string name="welcome_slogan">一天很短，开心了就笑，\n\n不开心了就过一会再笑。</string>
+    <string name="action_settings">设置</string>
+    <string name="action_feedback">反馈</string>
+    <string name="action_share">分享</string>
+    <string name="action_about">关于</string>
+    <string name="action_message">消息</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_pic_detail">趣图详情</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_about">关于开心段子</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_message">历史消息</string>
+    <string name="title_activity_ad_view">AdViewActivity</string>
+
+    
+
+</resources>
