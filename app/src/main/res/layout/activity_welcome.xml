@@ -1,27 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/light_blue"
-    android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/welcome_view"
+    android:background="@color/white">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo_top"
+            android:scaleType="fitStart"
+            android:layout_marginTop="30dp"/>
+    <RelativeLayout
+        android:id="@+id/spread_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        android:layout_marginBottom="20dp">
-
-        </LinearLayout>
-
-    <TextView android:text="@string/welcome_slogan"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"></RelativeLayout>
+        <!--android:background="@color/dark_white">-->
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:textStyle="bold"/>
+        android:src="@drawable/onejoke_logo"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitEnd"/>
 
-</LinearLayout>
+</RelativeLayout>

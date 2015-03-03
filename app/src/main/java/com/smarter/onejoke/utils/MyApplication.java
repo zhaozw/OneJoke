@@ -10,9 +10,6 @@ import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
-import net.youmi.android.AdManager;
-import net.youmi.android.spot.SpotManager;
-
 import java.util.List;
 
 /**
@@ -28,13 +25,7 @@ public class MyApplication extends Application {
         super.onCreate();
         //聚合数据sdk初始化
         SDKInitializer.initialize(getApplicationContext());
-        //有米广告初始化
-        AdManager.getInstance(this).init("062fd6a61636a274", "59cec7478d2394b1", false);
-        //有米广告预加载
-        SpotManager.getInstance(getApplicationContext()).loadSpotAds();
-
-
-//        小米推送
+        //小米推送
         //初始化push推送服务
         if(shouldInit()) {
             MiPushClient.registerPush(this, APP_ID, APP_KEY);

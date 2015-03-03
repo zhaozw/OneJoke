@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">开心段子</string>
-    <string name="welcome_slogan">一天很短，开心了就笑，\n\n不开心了就过一会再笑。</string>
+    <string name="welcome_slogan">A day is so short,We have to be Happy!</string>
     <string name="action_settings">设置</string>
     <string name="action_feedback">反馈</string>
     <string name="action_share">分享</string>

@@ -180,6 +180,7 @@ public class JokeFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                int firstVisibkeItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
                 //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载
                 // dy>0 表示向下滑动
@@ -192,6 +193,9 @@ public class JokeFragment extends Fragment {
                 }else {
                     floatingActionButton.show();
                 }
+
+//                if (dy>0&&firstVisibkeItem==0){
+//                }
             }
         });
 
