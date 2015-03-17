@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.smarter.onejoke.R;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -21,9 +19,10 @@ import com.umeng.update.UpdateStatus;
 public class AboutActivity extends BaseActivity {
 
     private TextView versionText;
-    private ButtonRectangle aboutAuthor;
-    private ButtonRectangle checkUpgrade;
-    private ButtonRectangle markOnPlay;
+    private TextView aboutAuthor;
+    private TextView checkUpgrade;
+    private TextView markOnPlay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,21 +33,18 @@ public class AboutActivity extends BaseActivity {
 
 
         versionText = (TextView)findViewById(R.id.version_text);
-        aboutAuthor = (ButtonRectangle)findViewById(R.id.about_author);
-        checkUpgrade = (ButtonRectangle)findViewById(R.id.check_update);
-        markOnPlay = (ButtonRectangle)findViewById(R.id.mark_on_play);
+        aboutAuthor = (TextView)findViewById(R.id.about_author);
+        checkUpgrade = (TextView)findViewById(R.id.check_update);
+        markOnPlay = (TextView)findViewById(R.id.mark_on_play);
+
 
         versionText.setText(getVersion());
         aboutAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean wrapInScrollView = true;
-                new MaterialDialog.Builder(AboutActivity.this)
-                        .title("关于开发者")
-                        .customView(R.layout.about_author, wrapInScrollView)
-                        .positiveText("确定")
-                        .build()
-                        .show();
+                Intent intent = new Intent(AboutActivity.this,AuthorActivity.class);
+                startActivity(intent);
+
             }
         });
         checkUpgrade.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +82,8 @@ public class AboutActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
 
     }

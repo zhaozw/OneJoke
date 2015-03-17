@@ -7,11 +7,18 @@
         android:layout_height="32dp"
         android:layout_centerInParent="true">
         </com.gc.materialdesign.views.ProgressBarCircularIndeterminate>
-    <ImageView
+        <!--<ImageView-->
+            <!--android:id="@+id/pic_detail_image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_centerInParent="true"/>-->
+
+    <com.smarter.onejoke.photoview.PhotoView
         android:id="@+id/pic_detail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"/>
+
 
     <TextView
         android:id="@+id/content_pic_text"

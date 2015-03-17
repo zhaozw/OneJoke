@@ -6,13 +6,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
 import com.smarter.onejoke.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +49,7 @@ public class MessageActivity extends BaseActivity {
                     map.put("MessageContent", pushMessage);
                     map.put("MessageTime", currentTime);
                     listItem.add(map);
+                    buildJson(listItem);
                 }
 
                 //生成适配器的Item和动态数组对应的元素
@@ -61,10 +59,8 @@ public class MessageActivity extends BaseActivity {
                         new String[] {"MessageContent", "MessageTime"},
                         //ImageItem的XML文件里面的一个ImageView,两个TextView ID
                         new int[] {R.id.message_content,R.id.message_time});
-
                 //添加并且显示
                 listView.setAdapter(listItemAdapter);
-                buildJson(listItem);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -78,6 +74,11 @@ public class MessageActivity extends BaseActivity {
                 map.put("MessageContent", pushMessage);
                 map.put("MessageTime", currentTime);
                 listItem.add(map);
+                try {
+                    buildJson(listItem);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             //生成适配器的Item和动态数组对应的元素
@@ -90,20 +91,16 @@ public class MessageActivity extends BaseActivity {
 
             //添加并且显示
             listView.setAdapter(listItemAdapter);
-            try {
-                buildJson(listItem);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
     public void buildJson(ArrayList<HashMap<String,Object>> listItem) throws JSONException
     {
         JSONArray json=new JSONArray();
-        JSONObject jsonObj=new JSONObject();
         for(int i=0;i<listItem.size();i++)
         {
+            JSONObject jsonObj=new JSONObject();
             jsonObj.put("MessageContent", listItem.get(i).get("MessageContent"));
             jsonObj.put("MessageTime", listItem.get(i).get("MessageTime"));
             //把每个数据当作一对象添加到数组里

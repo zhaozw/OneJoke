@@ -17,6 +17,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_message">历史消息</string>
     <string name="title_activity_ad_view">AdViewActivity</string>
+    <string name="title_activity_author">关于开发者</string>
 
     
 

@@ -23,22 +23,27 @@ public class WelcomeActivity extends BaseActivity implements AdSpreadInterface{
         setContentView(R.layout.activity_welcome);
         mTintManager.setStatusBarDarkMode(true,this);
 
-        AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
-        // 初始化开屏广告 ,需要传入布局用来加载开屏页面
-        adSpreadManager = new AdSpreadManager(this,
-                "SDK20151024100234gyduoom2dq8xm63",
-                (RelativeLayout) findViewById(R.id.spread_layout));
-        // 设置开屏回调接口
-        adSpreadManager.setAdSpreadInterface(this);
-        // 设置开屏下方LOGO，必须调用该方法
-//        adSpreadManager.setLogo(R.drawable.onejoke_logo);
-        // 设置开屏背景颜色，可不设置
-        // adSpreadManager.setBackgroundColor(Color.WHITE);
-        // 设置开屏倒计时通知方式
-        adSpreadManager.setSpreadNotifyType(this, AdSpreadManager.NOTIFY_CUSTOM);
-        // 请求开屏广告
-        adSpreadManager.requestAd();
-
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
+                // 初始化开屏广告 ,需要传入布局用来加载开屏页面
+                adSpreadManager = new AdSpreadManager(WelcomeActivity.this,
+                        "SDK20151024100234gyduoom2dq8xm63",
+                        (RelativeLayout) findViewById(R.id.spread_layout));
+                // 设置开屏回调接口
+                adSpreadManager.setAdSpreadInterface(WelcomeActivity.this);
+                // 设置开屏下方LOGO，必须调用该方法
+                //adSpreadManager.setLogo(R.drawable.onejoke_logo);
+                // 设置开屏背景颜色，可不设置
+                // adSpreadManager.setBackgroundColor(Color.WHITE);
+                // 设置开屏倒计时通知方式
+                adSpreadManager.setSpreadNotifyType(WelcomeActivity.this, AdSpreadManager.NOTIFY_CUSTOM);
+                // 请求开屏广告
+                adSpreadManager.requestAd();
+            }
+        });
+        //jumpToMain();
 
     }
     @Override

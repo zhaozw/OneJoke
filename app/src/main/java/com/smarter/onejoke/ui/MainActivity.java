@@ -2,6 +2,7 @@ package com.smarter.onejoke.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
@@ -10,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.kyview.interfaces.AdInstlInterface;
 import com.kyview.screen.interstitial.AdInstlManager;
 import com.smarter.onejoke.R;
@@ -27,6 +27,7 @@ import java.util.List;
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
+import me.drakeet.materialdialog.MaterialDialog;
 
 
 public class MainActivity extends BaseActivity implements MaterialTabListener{
@@ -81,44 +82,6 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
             );
         }
 
-
-        //AdView广告平台
-        adInstlManager = new AdInstlManager(this,
-                "SDK20151024100234gyduoom2dq8xm63");
-        adInstlManager.requestAd();
-        //layout.addView(adInstlManager.getContentView());
-
-        adInstlManager.setAdViewInterface(new AdInstlInterface() {
-            @Override
-            public void onClickAd() {
-
-            }
-
-            @Override
-            public void onDisplayAd() {
-
-            }
-
-            @Override
-            public void onAdDismiss() {
-
-            }
-
-            @Override
-            public void onReceivedAd(int i, View view) {
-//                Toast.makeText(MainActivity.this, "ReceivedAd",
-//                        Toast.LENGTH_SHORT).show();
-                adView = adInstlManager.getContentView();
-            }
-
-            @Override
-            public void onReceivedAdFailed(String s) {
-//                Toast.makeText(MainActivity.this, "onReceiveAdFailed",
-//                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
 //        AdViewTargeting.setAdSize(AdViewTargeting.AdSize.BANNER_SMART);
 //        layout = (LinearLayout)findViewById(R.id.adLayout);
 //        if (layout == null)
@@ -133,6 +96,48 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //AdView广告平台
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                adInstlManager = new AdInstlManager(MainActivity.this,
+                        "SDK20151024100234gyduoom2dq8xm63");
+                adInstlManager.requestAd();
+                adInstlManager.setAdViewInterface(new AdInstlInterface() {
+                    @Override
+                    public void onClickAd() {
+
+                    }
+
+                    @Override
+                    public void onDisplayAd() {
+
+                    }
+
+                    @Override
+                    public void onAdDismiss() {
+
+                    }
+
+                    @Override
+                    public void onReceivedAd(int i, View view) {
+//                Toast.makeText(MainActivity.this, "ReceivedAd",
+//                        Toast.LENGTH_SHORT).show();
+                        adView = adInstlManager.getContentView();
+                    }
+
+                    @Override
+                    public void onReceivedAdFailed(String s) {
+//                Toast.makeText(MainActivity.this, "onReceiveAdFailed",
+//                        Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,48 +189,47 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 实例化广告条
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            final MaterialDialog materialDialog = new MaterialDialog(this);
             if (adView != null) {
                 if (adView.getParent() != null) {
                     ((ViewGroup) adView.getParent()).removeView(adView);
                 }
-                new MaterialDialog.Builder(this)
-                        .customView(adView, false)
-                        .positiveText("退出")
-                        .negativeText("去看看")
-                        .callback(new MaterialDialog.ButtonCallback() {
-
+                        materialDialog
+                                .setView(adView)
+                        .setNegativeButton("去看看", new View.OnClickListener() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
-                                finish();
-                            }
-
-                            @Override
-                            public void onNegative(MaterialDialog dialog) {
+                            public void onClick(View v) {
                                 adInstlManager.clickAdReport();
                                 adInstlManager.destroy();
                             }
                         })
-                        .build()
-                        .show();
-            }else {
-                new MaterialDialog.Builder(this)
-                        .title("确定要退出吗？")
-                        .positiveText("退出")
-                        .negativeText("再看一会")
-                        .callback(new MaterialDialog.ButtonCallback() {
-
+                        .setPositiveButton("退出",new View.OnClickListener() {
                             @Override
-                            public void onPositive(MaterialDialog dialog) {
+                            public void onClick(View v) {
                                 finish();
                             }
+                        }).show();
 
+
+
+            }else {
+                        materialDialog
+                                .setTitle("确定要退出吗?")
+                                .setMessage("")
+                        .setNegativeButton("再看一会", new View.OnClickListener() {
                             @Override
-                            public void onNegative(MaterialDialog dialog) {
-                                dialog.dismiss();
+                            public void onClick(View v) {
+                                materialDialog.dismiss();
                             }
                         })
-                        .build()
-                        .show();
+                        .setPositiveButton("退出",new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                finish();
+                            }
+                        }).show();
+
 
             }
         }

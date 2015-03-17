@@ -32,31 +32,79 @@
         android:layout_marginTop="5dp"
         android:textColor="@color/grey"
         android:textSize="16sp"/>
-    <com.gc.materialdesign.views.ButtonRectangle
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/dark_blue"/>
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+    <TextView
         android:id="@+id/check_update"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_blue"
+        android:layout_height="45dp"
+        android:gravity="center"
         android:text="检查更新"
-        android:layout_marginTop="50dp"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:textSize="14sp"/>
+    </com.balysv.materialripple.MaterialRippleLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"/>
-    <com.gc.materialdesign.views.ButtonRectangle
+        android:layout_marginRight="25dp"
+        android:background="@color/dark_blue"/>
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+    <TextView
         android:id="@+id/about_author"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/light_blue"
+        android:layout_height="45dp"
         android:text="关于开发者"
+        android:gravity="center"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:textSize="14sp"/>
+    </com.balysv.materialripple.MaterialRippleLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"/>
-    <com.gc.materialdesign.views.ButtonRectangle
-        android:id="@+id/mark_on_play"
+        android:layout_marginRight="25dp"
+        android:background="@color/dark_blue"/>
+    <com.balysv.materialripple.MaterialRippleLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue"
-        android:text="给我评分"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"/>
+        android:layout_marginRight="25dp">
+    <TextView
+        android:id="@+id/mark_on_play"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:text="给我评分"
+        android:gravity="center"
+        android:textColor="@color/light_blue"
+        android:textStyle="bold"
+        android:textSize="14sp"/>
+    </com.balysv.materialripple.MaterialRippleLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:background="@color/dark_blue"/>
 
 
 
