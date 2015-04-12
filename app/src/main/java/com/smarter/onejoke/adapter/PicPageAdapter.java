@@ -1,14 +1,15 @@
 package com.smarter.onejoke.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.smarter.onejoke.R;
+import com.smarter.onejoke.utils.ExpandableTextView;
 import com.smarter.onejoke.utils.PicInfo;
 import com.squareup.picasso.Picasso;
 
@@ -21,7 +22,7 @@ public class PicPageAdapter extends PagerAdapter{
     private List<PicInfo> picInfoList;
     private Context context;
     private ImageView picDetailImage;
-    private TextView contentPicText;
+    private ExpandableTextView contentPicText;
 
 
 
@@ -39,8 +40,9 @@ public class PicPageAdapter extends PagerAdapter{
     public Object instantiateItem(ViewGroup container, int position) {
         View picDetailView = LayoutInflater.from(context).inflate(R.layout.item_pic_detail,container,false);
         picDetailImage = (ImageView)picDetailView.findViewById(R.id.pic_detail_image);
-        contentPicText = (TextView)picDetailView.findViewById(R.id.content_pic_text);
+        contentPicText = (ExpandableTextView)picDetailView.findViewById(R.id.content_pic_text);
         contentPicText.setText(picInfoList.get(position).getDescription());
+        contentPicText.setBackgroundColor(Color.argb(60,33,150,243));
         Picasso.with(context).
                 load(picInfoList.get(position).getPicUrl()).
                 into(picDetailImage);

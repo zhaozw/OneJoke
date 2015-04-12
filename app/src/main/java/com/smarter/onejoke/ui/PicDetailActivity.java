@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
+import com.kyview.AdViewStream;
+import com.kyview.AdViewTargeting;
+import com.kyview.interfaces.AdViewInterface;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.PicPageAdapter;
 import com.smarter.onejoke.utils.PicInfo;
@@ -27,17 +31,40 @@ import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PicDetailActivity extends BaseActivity {
+public class PicDetailActivity extends BaseActivity implements AdViewInterface{
 
     private ViewPager viewPager;
     private List<PicInfo> picInfoList = new ArrayList<>();
     private PicPageAdapter picPageAdapter;
     private int position ;
+    private LinearLayout layout;
+    private AdViewStream viewStream;
+    private int count = 0;
 
     private final static String weixinAppID = "wx006e00e8f84351fb";
     private final static String weixinAppSecret = "1f115f46a8e3fc77a3a0d844d717caaf";
 
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AdViewTargeting.setAdSize(AdViewTargeting.AdSize.BANNER_SMART);
+        AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
+        layout = (LinearLayout)findViewById(R.id.ad_banner);
+        getBannerAd();
+    }
+
+    private void getBannerAd(){
+        if (layout == null)
+            return;
+        layout.removeAllViews();
+        viewStream = new AdViewStream(this,"SDK20151024100234gyduoom2dq8xm63");
+        viewStream.setAdViewInterface(this);
+        layout.addView(viewStream);
+        layout.invalidate();
+    }
 
 
     @Override
@@ -185,4 +212,24 @@ public class PicDetailActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void onClosedAd() {
+        count++;
+        if (count < 3){
+            getBannerAd();
+        }else {
+            viewStream.setClosed(true);
+
+        }
+    }
+
+    @Override
+    public void onDisplayAd() {
+
+    }
+
+    @Override
+    public void onClickAd() {
+
+    }
 }

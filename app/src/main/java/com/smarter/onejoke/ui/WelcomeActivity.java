@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
-import com.kyview.AdViewTargeting;
 import com.kyview.interfaces.AdSpreadInterface;
 import com.kyview.screen.spreadscreen.AdSpreadManager;
 import com.smarter.onejoke.R;
@@ -23,27 +21,27 @@ public class WelcomeActivity extends BaseActivity implements AdSpreadInterface{
         setContentView(R.layout.activity_welcome);
         mTintManager.setStatusBarDarkMode(true,this);
 
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
-                // 初始化开屏广告 ,需要传入布局用来加载开屏页面
-                adSpreadManager = new AdSpreadManager(WelcomeActivity.this,
-                        "SDK20151024100234gyduoom2dq8xm63",
-                        (RelativeLayout) findViewById(R.id.spread_layout));
-                // 设置开屏回调接口
-                adSpreadManager.setAdSpreadInterface(WelcomeActivity.this);
-                // 设置开屏下方LOGO，必须调用该方法
-                //adSpreadManager.setLogo(R.drawable.onejoke_logo);
-                // 设置开屏背景颜色，可不设置
-                // adSpreadManager.setBackgroundColor(Color.WHITE);
-                // 设置开屏倒计时通知方式
-                adSpreadManager.setSpreadNotifyType(WelcomeActivity.this, AdSpreadManager.NOTIFY_CUSTOM);
-                // 请求开屏广告
-                adSpreadManager.requestAd();
-            }
-        });
-        //jumpToMain();
+//        new Handler().post(new Runnable() {
+//            @Override
+//            public void run() {
+//                AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
+//                // 初始化开屏广告 ,需要传入布局用来加载开屏页面
+//                adSpreadManager = new AdSpreadManager(WelcomeActivity.this,
+//                        "SDK20151024100234gyduoom2dq8xm63",
+//                        (RelativeLayout) findViewById(R.id.spread_layout));
+//                // 设置开屏回调接口
+//                adSpreadManager.setAdSpreadInterface(WelcomeActivity.this);
+//                // 设置开屏下方LOGO，必须调用该方法
+//                //adSpreadManager.setLogo(R.drawable.onejoke_logo);
+//                // 设置开屏背景颜色，可不设置
+//                // adSpreadManager.setBackgroundColor(Color.WHITE);
+//                // 设置开屏倒计时通知方式
+//                adSpreadManager.setSpreadNotifyType(WelcomeActivity.this, AdSpreadManager.NOTIFY_CUSTOM);
+//                // 请求开屏广告
+//                adSpreadManager.requestAd();
+//            }
+//        });
+        jumpToMain();
 
     }
     @Override
@@ -115,6 +113,6 @@ public class WelcomeActivity extends BaseActivity implements AdSpreadInterface{
                     adSpreadManager.setAdSpreadInterface(null);
                finish();
             }
-        }, 2000);
+        }, 1500);
     }
 }

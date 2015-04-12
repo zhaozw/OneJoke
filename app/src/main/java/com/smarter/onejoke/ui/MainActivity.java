@@ -36,7 +36,6 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     private List<Fragment> fragments = new ArrayList<>();
     private MyPageAdapter pageAdapter;
     private String[] tabTitle = {"每日笑话","每日趣图"};
-    //private LinearLayout layout;
 
     //UmengSDK内容
     private FeedbackAgent agent;
@@ -45,7 +44,6 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     //AdView广告
     private View adView = null;
     private AdInstlManager adInstlManager;
-    //private AdViewStream viewStream;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,17 +80,6 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
             );
         }
 
-//        AdViewTargeting.setAdSize(AdViewTargeting.AdSize.BANNER_SMART);
-//        layout = (LinearLayout)findViewById(R.id.adLayout);
-//        if (layout == null)
-//            return;
-//        if (viewStream != null)
-//            viewStream.setClosed(true);
-//        layout.removeAllViews();
-//        viewStream = new AdViewStream(this,"SDK20151024100234gyduoom2dq8xm63");
-//        viewStream.setAdViewInterface(this);
-//        layout.addView(viewStream);
-//        layout.invalidate();
 
     }
 
@@ -246,18 +233,5 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
         }
     }
 
-//    @Override
-//    public void onClosedAd() {
-//        viewStream.setClosed(true);
-//    }
-//
-//    @Override
-//    public void onDisplayAd() {
-//
-//    }
-//
-//    @Override
-//    public void onClickAd() {
-//
-//    }
+
 }
