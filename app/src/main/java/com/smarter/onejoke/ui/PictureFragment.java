@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.PicAdapter;
@@ -39,8 +38,6 @@ public class PictureFragment extends Fragment {
 
     private long currentTime;
 
-    private ProgressBarCircularIndeterminate circularProgress;
-    private ProgressBarCircularIndeterminate loadMorePic;
     private List<PicInfo> picInfoList = new ArrayList<>();
     private RecyclerView recyclerView;
     private FloatingActionButton fabPic;
@@ -55,62 +52,11 @@ public class PictureFragment extends Fragment {
 
         @Override
         public void handleMessage(Message msg) {
-            circularProgress.setVisibility(View.GONE);
-            loadMorePic.setVisibility(View.GONE);
             refreshLayout.setRefreshing(false);
 
             if (msg.what == 0){
-                String picResoult = (String)msg.obj;
-                try {
-                    JSONObject object_pic = new JSONObject(picResoult);
-                    long resultCode = object_pic.getLong("error_code");
-                    if (resultCode == 0) {
-                        JSONObject object = object_pic.getJSONObject("result");
-                        if (picFlag == 0) {
-                            picInfoList.clear();
-                            JSONArray jsonArray = object.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                PicInfo picInfo = new PicInfo();
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String picUrl = jsonObject.getString("url");
-                                if (!picUrl.endsWith(".gif")) {
-                                    picInfo.setPicUrl(picUrl);
-                                    String description = jsonObject.getString("content");
-                                    picInfo.setDescription(description);
-                                    long unixTime = jsonObject.getLong("unixtime");
-                                    Log.i("UnixTime",unixTime+"");
-                                    picInfo.setUnixTime(unixTime);
-                                    picInfoList.add(picInfo);
-                                }
-                            }
-                            picAdapter = new PicAdapter(picInfoList, getActivity());
-                            recyclerView.setAdapter(picAdapter);
-                            fabPic.show();
-                        }else if (picFlag == 1){
-                            JSONArray jsonArray = object.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                PicInfo picInfo = new PicInfo();
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String picUrl = jsonObject.getString("url");
-                                if (!picUrl.endsWith(".gif")) {
-                                    picInfo.setPicUrl(picUrl);
-                                    String description = jsonObject.getString("content");
-                                    picInfo.setDescription(description);
-                                    long unixTime = jsonObject.getLong("unixtime");
-                                    Log.i("UnixTime",unixTime+"");
-                                    picInfo.setUnixTime(unixTime);
-                                    picInfoList.add(picInfo);
-                                }
-                            }
-
-                            picAdapter.notifyDataSetChanged();
-                        }
-                    }else {
-                        Toast.makeText(getActivity(),object_pic.getString("reason"),Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                String picResult = (String)msg.obj;
+                paseJsonAndShowList(picResult);
             }else if (msg.what == 1){
                 String reason = (String)msg.obj;
                 Toast.makeText(getActivity(),reason,Toast.LENGTH_SHORT).show();
@@ -129,11 +75,6 @@ public class PictureFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View picView = inflater.inflate(R.layout.fragment_picture, container, false);
-        circularProgress = (ProgressBarCircularIndeterminate)
-                picView.findViewById(R.id.progress_circle_pic);
-        loadMorePic = (ProgressBarCircularIndeterminate)
-                picView.findViewById(R.id.progress_load_more_pic);
-        loadMorePic.setVisibility(View.GONE);
         recyclerView = (RecyclerView)picView.findViewById(R.id.recycler_pic);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -142,16 +83,21 @@ public class PictureFragment extends Fragment {
         fabPic = (FloatingActionButton)picView.findViewById(R.id.fab_picture);
         fabPic.hide(false);
         refreshLayout = (SwipeRefreshLayout)picView.findViewById(R.id.refresh_pic);
-        refreshLayout.setColorScheme(android.R.color.holo_red_dark,
+        refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_purple);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshLayout.setRefreshing(true);
+            }
+        },250);
 
-        //fabPic.attachToRecyclerView(recyclerView);
         fabPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                circularProgress.setVisibility(View.VISIBLE);
+                refreshLayout.setRefreshing(true);
                 getPicData();
             }
         });
@@ -169,10 +115,8 @@ public class PictureFragment extends Fragment {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
-                //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载
-                // dy>0 表示向下滑动
                 if (lastVisibleItem == totalItemCount-1 && dy > 0) {
-                    loadMorePic.setVisibility(View.VISIBLE);
+                    refreshLayout.setRefreshing(true);
                     getMoreData();
                 }
                 if (dy>0){
@@ -187,6 +131,65 @@ public class PictureFragment extends Fragment {
 
         getPicData();
         return picView;
+    }
+
+    private void paseJsonAndShowList(String picResult){
+        try {
+            JSONObject object_pic = new JSONObject(picResult);
+            long resultCode = object_pic.getLong("error_code");
+            if (resultCode == 0) {
+                JSONObject object = object_pic.getJSONObject("result");
+                if (picFlag == 0) {
+                    picInfoList.clear();
+                    JSONArray jsonArray = object.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        PicInfo picInfo = new PicInfo();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String picUrl = jsonObject.getString("url");
+                                if (!picUrl.endsWith(".gif")) {
+                                    picInfo.setPicUrl(picUrl);
+                                    String description = jsonObject.getString("content");
+                                    picInfo.setDescription(description);
+                                    long unixTime = jsonObject.getLong("unixtime");
+                                    Log.i("UnixTime",unixTime+"");
+                                    picInfo.setUnixTime(unixTime);
+                                    picInfoList.add(picInfo);
+                                }
+//                        picInfo.setPicUrl(picUrl);
+//                        String description = jsonObject.getString("content");
+//                        picInfo.setDescription(description);
+//                        long unixTime = jsonObject.getLong("unixtime");
+//                        picInfo.setUnixTime(unixTime);
+//                        picInfoList.add(picInfo);
+                    }
+                    picAdapter = new PicAdapter(picInfoList, getActivity());
+                    recyclerView.setAdapter(picAdapter);
+                    fabPic.show();
+                }else if (picFlag == 1){
+                    JSONArray jsonArray = object.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        PicInfo picInfo = new PicInfo();
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        String picUrl = jsonObject.getString("url");
+                        if (!picUrl.endsWith(".gif")) {
+                            picInfo.setPicUrl(picUrl);
+                            String description = jsonObject.getString("content");
+                            picInfo.setDescription(description);
+                            long unixTime = jsonObject.getLong("unixtime");
+                            Log.i("UnixTime",unixTime+"");
+                            picInfo.setUnixTime(unixTime);
+                            picInfoList.add(picInfo);
+                        }
+                    }
+
+                    picAdapter.notifyDataSetChanged();
+                }
+            }else {
+                Toast.makeText(getActivity(),object_pic.getString("reason"),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getPicData(){

@@ -1,4 +1,4 @@
-package com.smarter.onejoke.utils;
+package com.smarter.onejoke.customview;
 
 import android.content.Context;
 import android.graphics.Bitmap;

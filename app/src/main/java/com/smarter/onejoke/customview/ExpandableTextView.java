@@ -1,4 +1,4 @@
-package com.smarter.onejoke.utils;
+package com.smarter.onejoke.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -11,7 +11,7 @@ import com.smarter.onejoke.R;
 
 public class ExpandableTextView extends TextView {
     private static final int DEFAULT_TRIM_LENGTH = 15;
-    private static final String ELLIPSIS = ".  .  .";
+    private static final String ELLIPSIS = "more...";
 
     private CharSequence originalText;
     private CharSequence trimmedText;

@@ -2,26 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_centerInParent="true">
-        </com.gc.materialdesign.views.ProgressBarCircularIndeterminate>
 
-    <com.smarter.onejoke.photoview.PhotoView
+    </com.gc.materialdesign.views.ProgressBarCircularIndeterminate>
+
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/pic_detail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
 
-        <com.smarter.onejoke.utils.ExpandableTextView
-            android:id="@+id/content_pic_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_alignParentBottom="true"
-            android:textSize="18sp"
-            android:textColor="#fff" />
+    <com.smarter.onejoke.customview.ExpandableTextView
+        android:id="@+id/content_pic_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:textColor="#fff"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

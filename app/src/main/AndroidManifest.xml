@@ -24,7 +24,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.thinkland.juheapi.openid"
             android:value="JH0cddb126c10fee105f5c8a935e0754f2" />
@@ -33,7 +33,7 @@
             android:value="54db6581fd98c5c76d000665" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Meizu" />
+            android:value="${UMENG_CHANNEL_VALUE}" />
 
         <activity
             android:name=".ui.MainActivity"

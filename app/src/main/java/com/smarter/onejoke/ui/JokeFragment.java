@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.gc.materialdesign.views.ProgressBarCircularIndeterminate;
 import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.JokeAdapter;
@@ -39,8 +38,6 @@ public class JokeFragment extends Fragment {
     private static final String BASE_URL = "http://japi.juhe.cn/joke/content/list.from";
     private int jokeFlag = 0;
 
-    private ProgressBarCircularIndeterminate circularProgress;
-    private ProgressBarCircularIndeterminate loadMore;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter jokeAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -56,69 +53,11 @@ public class JokeFragment extends Fragment {
 
         @Override
         public void handleMessage(Message msg) {
-            circularProgress.setVisibility(View.GONE);
             refreshLayout.setRefreshing(false);
-            loadMore.setVisibility(View.GONE);
             if (msg.what==0){
                 refreshLayout.setRefreshing(false);
-                String jokeResoult = (String)msg.obj;
-                Log.i("JokeResoult",jokeResoult);
-                try {
-                    JSONObject object_joke = new JSONObject(jokeResoult);
-                    Log.i("object_joke",object_joke.toString());
-                    long resultCode = object_joke.getLong("error_code");
-                    Log.i("redultCode",resultCode+"");
-                    if (resultCode == 0) {
-                        JSONObject object = object_joke.getJSONObject("result");
-                        if (jokeFlag == 0) {
-                            jokeInfoList.clear();
-
-                            Log.i("object", object.toString());
-                            JSONArray jsonArray = object.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                String content = jsonObject.getString("content");
-                                String updateTime = jsonObject.getString("updatetime");
-                                long unixTime = jsonObject.getLong("unixtime");
-                                JokeInfo jokeInfo = new JokeInfo();
-                                jokeInfo.setContents(content);
-                                jokeInfo.setUpdateTime(updateTime);
-                                jokeInfo.setUnixTime(unixTime);
-                                jokeInfoList.add(jokeInfo);
-                                Log.i("data", content);
-
-                            }
-                            jokeAdapter = new JokeAdapter(jokeInfoList, mController, getActivity());
-                            recyclerView.setAdapter(jokeAdapter);
-                            floatingActionButton.show();
-
-                        }else if (jokeFlag == 1){
-                            JSONArray jsonArray = object.getJSONArray("data");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                                String content = jsonObject.getString("content");
-                                String updateTime = jsonObject.getString("updatetime");
-                                long unixTime = jsonObject.getLong("unixtime");
-                                JokeInfo jokeInfo = new JokeInfo();
-                                jokeInfo.setContents(content);
-                                jokeInfo.setUpdateTime(updateTime);
-                                jokeInfo.setUnixTime(unixTime);
-                                jokeInfoList.add(jokeInfo);
-                                Log.i("data", content);
-
-                            }
-                            //jokeAdapter = new JokeAdapter(jokeInfoList, mController, getActivity());
-                            jokeAdapter.notifyDataSetChanged();
-                            Log.i("JokeSize",jokeInfoList.size()+"");
-                        }
-
-                    }else {
-                        Toast.makeText(getActivity(),object_joke.getString("reason"),Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                String jokeResult = (String)msg.obj;
+                paseJsonAndShowList(jokeResult);
             }else if (msg.what == 1){
                 String reason = (String)msg.obj;
                 Toast.makeText(getActivity(), reason, Toast.LENGTH_SHORT).show();
@@ -140,34 +79,32 @@ public class JokeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View jokeView = inflater.inflate(R.layout.fragment_joke,container,false);
-        circularProgress = (ProgressBarCircularIndeterminate)
-                jokeView.findViewById(R.id.progress_circle_joke);
-        loadMore = (ProgressBarCircularIndeterminate)
-                jokeView.findViewById(R.id.progress_load_more);
-        loadMore.setVisibility(View.GONE);
         recyclerView = (RecyclerView)jokeView.findViewById(R.id.recycler_joke);
         floatingActionButton = (FloatingActionButton)jokeView.findViewById(R.id.fab_joke);
         refreshLayout = (SwipeRefreshLayout)jokeView.findViewById(R.id.refresh_joke);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-//        jokeAdapter = new JokeAdapter(data);
-        //recyclerView.setAdapter(jokeAdapter);
         floatingActionButton.hide(false);
-        //floatingActionButton.attachToRecyclerView(recyclerView);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                circularProgress.setVisibility(View.VISIBLE);
+                refreshLayout.setRefreshing(true);
                 getJokeData();
             }
         });
 
 
-        refreshLayout.setColorScheme(android.R.color.holo_red_dark,
+        refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_purple);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+             refreshLayout.setRefreshing(true);
+            }
+        },250);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -180,12 +117,10 @@ public class JokeFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
-                int firstVisibkeItem = ((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
-                //lastVisibleItem >= totalItemCount - 4 表示剩下4个item自动加载
-                // dy>0 表示向下滑动
+
                 if (lastVisibleItem == totalItemCount-1 && dy > 0) {
-                    loadMore.setVisibility(View.VISIBLE);
+                    refreshLayout.setRefreshing(true);
                         getMoreData();
                 }
                 if (dy>0){
@@ -194,14 +129,69 @@ public class JokeFragment extends Fragment {
                     floatingActionButton.show();
                 }
 
-//                if (dy>0&&firstVisibkeItem==0){
-//                }
             }
         });
 
         getJokeData();
 
         return jokeView;
+    }
+
+    private void paseJsonAndShowList(String jokeResult){
+        try {
+            JSONObject object_joke = new JSONObject(jokeResult);
+            Log.i("object_joke",object_joke.toString());
+            long resultCode = object_joke.getLong("error_code");
+            Log.i("redultCode",resultCode+"");
+            if (resultCode == 0) {
+                JSONObject object = object_joke.getJSONObject("result");
+                if (jokeFlag == 0) {
+                    jokeInfoList.clear();
+
+                    Log.i("object", object.toString());
+                    JSONArray jsonArray = object.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        String content = jsonObject.getString("content");
+                        String updateTime = jsonObject.getString("updatetime");
+                        long unixTime = jsonObject.getLong("unixtime");
+                        JokeInfo jokeInfo = new JokeInfo();
+                        jokeInfo.setContents(content);
+                        jokeInfo.setUpdateTime(updateTime);
+                        jokeInfo.setUnixTime(unixTime);
+                        jokeInfoList.add(jokeInfo);
+                        Log.i("data", content);
+
+                    }
+                    jokeAdapter = new JokeAdapter(jokeInfoList, mController, getActivity());
+                    recyclerView.setAdapter(jokeAdapter);
+                    floatingActionButton.show();
+
+                }else if (jokeFlag == 1){
+                    JSONArray jsonArray = object.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                        String content = jsonObject.getString("content");
+                        String updateTime = jsonObject.getString("updatetime");
+                        long unixTime = jsonObject.getLong("unixtime");
+                        JokeInfo jokeInfo = new JokeInfo();
+                        jokeInfo.setContents(content);
+                        jokeInfo.setUpdateTime(updateTime);
+                        jokeInfo.setUnixTime(unixTime);
+                        jokeInfoList.add(jokeInfo);
+                        Log.i("data", content);
+
+                    }
+                    jokeAdapter.notifyDataSetChanged();
+                    Log.i("JokeSize",jokeInfoList.size()+"");
+                }
+
+            }else {
+                Toast.makeText(getActivity(),object_joke.getString("reason"),Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getJokeData(){

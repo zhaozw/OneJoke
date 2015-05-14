@@ -2,6 +2,7 @@ package com.smarter.onejoke.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.ui.PicDetailActivity;
 import com.smarter.onejoke.utils.PicInfo;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,12 @@ import java.util.List;
  * Created by panl on 15/2/10.
  */
 public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
+
+    ImageLoader imageLoader = ImageLoader.getInstance();
+    DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+            .cacheInMemory(true)
+            .cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 
     private List<PicInfo> picInfoList = new ArrayList<>();
     private Activity context;
@@ -46,12 +55,7 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(PicAdapter.ViewHolder holder, final int position) {
         holder.descriptionText.setText(picInfoList.get(position).getDescription());
-        Picasso.with(context).load(picInfoList
-                .get(position)
-                .getPicUrl())
-                .resize(200,200)
-                .centerCrop()
-                .into(holder.picImage);
+        imageLoader.displayImage(picInfoList.get(position).getPicUrl(), holder.picImage, options);
         holder.picImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
