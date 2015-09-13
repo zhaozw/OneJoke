@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
+import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.JokeAdapter;
 import com.smarter.onejoke.utils.JokeClient;
 import com.smarter.onejoke.utils.JokeInfo;
@@ -85,6 +86,7 @@ public class JokeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
         floatingActionButton.hide(false);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

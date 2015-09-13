@@ -26,7 +26,7 @@ public class PicPageAdapter extends PagerAdapter{
     DisplayImageOptions options = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
             .cacheInMemory(true)
-            .cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+            .cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565).build();
     private List<PicInfo> picInfoList;
     private Context context;
     private ImageView picDetailImage;

@@ -29,7 +29,7 @@ public class MyApplication extends Application {
     public static final String APP_ID = "2882303761517307330";
     public static final String APP_KEY = "5921730753330";
     public static final String TAG = "com.smarter.onejoke";
-    private Context context;
+    private static Context context;
 
     @Override
     public void onCreate() {
@@ -59,7 +59,27 @@ public class MyApplication extends Application {
         };
         Logger.setLogger(this, newLogger);
 
+        initImageLoader();
 
+    }
+    private boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = android.os.Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static Context getContext(){
+        return context;
+    }
+
+    private void initImageLoader(){
         File cacheDir = StorageUtils.getOwnCacheDirectory(
                 getApplicationContext(), "Pictures/OneJoke");
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
@@ -75,17 +95,5 @@ public class MyApplication extends Application {
                 .writeDebugLogs()
                 .build();
         ImageLoader.getInstance().init(config);
-    }
-    private boolean shouldInit() {
-        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
-        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
-        String mainProcessName = getPackageName();
-        int myPid = android.os.Process.myPid();
-        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
-            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

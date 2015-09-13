@@ -56,7 +56,7 @@ public class PictureFragment extends Fragment {
 
             if (msg.what == 0){
                 String picResult = (String)msg.obj;
-                paseJsonAndShowList(picResult);
+                parseJsonAndShowList(picResult);
             }else if (msg.what == 1){
                 String reason = (String)msg.obj;
                 Toast.makeText(getActivity(),reason,Toast.LENGTH_SHORT).show();
@@ -77,7 +77,7 @@ public class PictureFragment extends Fragment {
         View picView = inflater.inflate(R.layout.fragment_picture, container, false);
         recyclerView = (RecyclerView)picView.findViewById(R.id.recycler_pic);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
         fabPic = (FloatingActionButton)picView.findViewById(R.id.fab_picture);
@@ -92,7 +92,7 @@ public class PictureFragment extends Fragment {
             public void run() {
                 refreshLayout.setRefreshing(true);
             }
-        },250);
+        }, 250);
 
         fabPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,7 @@ public class PictureFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                int lastVisibleItem =  layoutManager.findLastVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
                 if (lastVisibleItem == totalItemCount-1 && dy > 0) {
                     refreshLayout.setRefreshing(true);
@@ -128,12 +128,11 @@ public class PictureFragment extends Fragment {
         });
 
 
-
         getPicData();
         return picView;
     }
 
-    private void paseJsonAndShowList(String picResult){
+    private void parseJsonAndShowList(String picResult){
         try {
             JSONObject object_pic = new JSONObject(picResult);
             long resultCode = object_pic.getLong("error_code");

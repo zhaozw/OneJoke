@@ -6,9 +6,7 @@
     <com.gc.materialdesign.views.ProgressBarCircularIndeterminate
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_centerInParent="true">
-
-    </com.gc.materialdesign.views.ProgressBarCircularIndeterminate>
+        android:layout_centerInParent="true" />
 
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/pic_detail_image"

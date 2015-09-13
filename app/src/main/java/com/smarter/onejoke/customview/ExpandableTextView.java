@@ -11,7 +11,7 @@ import com.smarter.onejoke.R;
 
 public class ExpandableTextView extends TextView {
     private static final int DEFAULT_TRIM_LENGTH = 15;
-    private static final String ELLIPSIS = "more...";
+    private static final String ELLIPSIS = "...";
 
     private CharSequence originalText;
     private CharSequence trimmedText;

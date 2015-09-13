@@ -1,15 +1,20 @@
 package com.smarter.onejoke.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SwitchCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.kyview.interfaces.AdInstlInterface;
 import com.kyview.screen.interstitial.AdInstlManager;
@@ -21,21 +26,16 @@ import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.update.UmengUpdateAgent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.neokree.materialtabs.MaterialTab;
 import it.neokree.materialtabs.MaterialTabHost;
 import it.neokree.materialtabs.MaterialTabListener;
-import me.drakeet.materialdialog.MaterialDialog;
 
 
-public class MainActivity extends BaseActivity implements MaterialTabListener{
+public class MainActivity extends BaseActivity implements MaterialTabListener {
     private MaterialTabHost tabHost;
     private ViewPager viewPager;
-    private List<Fragment> fragments = new ArrayList<>();
     private MyPageAdapter pageAdapter;
-    private String[] tabTitle = {"每日笑话","每日趣图"};
+    private String[] tabTitle = {"每日笑话", "每日趣图"};
 
     //UmengSDK内容
     private FeedbackAgent agent;
@@ -49,24 +49,33 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
+        initViewPager();
+    }
+
+
+
+
+    private void init(){
         mTintManager.setStatusBarTintEnabled(true);
         mTintManager.setStatusBarTintResource(R.color.light_blue);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getSupportActionBar().setElevation(0);
+        }
         //友盟检查更新
         UmengUpdateAgent.update(this);
         //友盟用户反馈
         agent = new FeedbackAgent(this);
         agent.sync();
+    }
 
+    private void initViewPager(){
+        tabHost = (MaterialTabHost) findViewById(R.id.materialTabHost);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        tabHost = (MaterialTabHost)findViewById(R.id.materialTabHost);
-        viewPager = (ViewPager)findViewById(R.id.view_pager);
-
-        fragments.add(new JokeFragment());
-        fragments.add(new PictureFragment());
-
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager(),fragments);
+        pageAdapter = new MyPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pageAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 tabHost.setSelectedNavigationItem(position);
@@ -79,9 +88,8 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
                             .setTabListener(MainActivity.this)
             );
         }
-
-
     }
+
 
     @Override
     protected void onStart() {
@@ -98,28 +106,19 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
                     public void onClickAd() {
 
                     }
-
                     @Override
                     public void onDisplayAd() {
 
                     }
-
                     @Override
                     public void onAdDismiss() {
-
                     }
-
                     @Override
                     public void onReceivedAd(int i, View view) {
-//                Toast.makeText(MainActivity.this, "ReceivedAd",
-//                        Toast.LENGTH_SHORT).show();
                         adView = adInstlManager.getContentView();
                     }
-
                     @Override
                     public void onReceivedAdFailed(String s) {
-//                Toast.makeText(MainActivity.this, "onReceiveAdFailed",
-//                        Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -130,6 +129,18 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        final MenuItem switchItem = menu.findItem(R.id.action_switch);
+        MenuItemCompat.setActionView(switchItem, R.layout.view_switch_compact);
+        final SwitchCompat switchCompat = (SwitchCompat) switchItem.getActionView()
+                .findViewById(R.id.switchCompat);
+        switchCompat.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    }
+                }
+        );
         return true;
     }
 
@@ -144,12 +155,12 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
         if (id == R.id.action_feedback) {
             agent.startFeedbackActivity();
             return true;
-        }else if (id == R.id.action_about){
-            Intent intent = new Intent(MainActivity.this,AboutActivity.class);
+        } else if (id == R.id.action_about) {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
             return true;
-        }else if (id == R.id.action_message){
-            Intent intent = new Intent(MainActivity.this,MessageActivity.class);
+        } else if (id == R.id.action_message) {
+            Intent intent = new Intent(MainActivity.this, MessageActivity.class);
             startActivity(intent);
             return true;
         }
@@ -176,59 +187,58 @@ public class MainActivity extends BaseActivity implements MaterialTabListener{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // 实例化广告条
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            final MaterialDialog materialDialog = new MaterialDialog(this);
-            if (adView != null) {
-                if (adView.getParent() != null) {
-                    ((ViewGroup) adView.getParent()).removeView(adView);
-                }
-                        materialDialog
-                                .setView(adView)
-                        .setNegativeButton("去看看", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                adInstlManager.clickAdReport();
-                                adInstlManager.destroy();
-                            }
-                        })
-                        .setPositiveButton("退出",new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                finish();
-                            }
-                        }).show();
-
-
-
-            }else {
-                        materialDialog
-                                .setTitle("确定要退出吗?")
-                                .setMessage("")
-                        .setNegativeButton("再看一会", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                materialDialog.dismiss();
-                            }
-                        })
-                        .setPositiveButton("退出",new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                finish();
-                            }
-                        }).show();
-
-
-            }
+            showDialog();
         }
-
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    private void showDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (adView != null){
+            if (adView.getParent() != null) {
+                ((ViewGroup) adView.getParent()).removeView(adView);
+            }
+            builder.setView(adView);
+            builder.setNegativeButton("去看看", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    adInstlManager.clickAdReport();
+                    adInstlManager.destroy();
+                }
+            });
+            builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.create().show();
+        }else {
+            builder.setTitle("确定要退出吗？");
+            builder.setNegativeButton("再看看", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setPositiveButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            builder.create().show();
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /**使用SSO授权必须添加如下代码 */
-        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
-        if(ssoHandler != null){
+        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
+        if (ssoHandler != null) {
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
     }

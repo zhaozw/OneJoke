@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="ExpandableTextView">
         <attr name="trimLength" format="integer" />
-    </declare-styleable>
-
-    <declare-styleable name="GifView">
-        <attr name="auto_play" format="boolean"/>
     </declare-styleable>
 
 </resources>

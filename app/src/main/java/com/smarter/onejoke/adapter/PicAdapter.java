@@ -1,5 +1,6 @@
 package com.smarter.onejoke.adapter;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,12 +30,13 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     DisplayImageOptions options = new DisplayImageOptions.Builder()
             .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
             .cacheInMemory(true)
-            .cacheOnDisc(true).bitmapConfig(Bitmap.Config.RGB_565).build();
+            .cacheOnDisk(true).bitmapConfig(Bitmap.Config.RGB_565).build();
 
     private List<PicInfo> picInfoList = new ArrayList<>();
     private Activity context;
+    private int lastPosition;
 
-    public PicAdapter(List<PicInfo> picInfoList,Activity context) {
+    public PicAdapter(List<PicInfo> picInfoList, Activity context) {
         this.picInfoList = picInfoList;
         this.context = context;
 
@@ -42,7 +44,7 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
     @Override
     public PicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View picView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture,parent,false);
+        View picView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
         ViewHolder viewHolder = new ViewHolder(picView);
         return viewHolder;
     }
@@ -55,26 +57,34 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(PicAdapter.ViewHolder holder, final int position) {
         holder.descriptionText.setText(picInfoList.get(position).getDescription());
+        holder.picImage.setImageResource(R.mipmap.pic_default);
         imageLoader.displayImage(picInfoList.get(position).getPicUrl(), holder.picImage, options);
         holder.picImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PicDetailActivity.class);
-                intent.putCharSequenceArrayListExtra("picInfoList",(ArrayList)picInfoList);
-                intent.putExtra("position",position);
+                intent.putCharSequenceArrayListExtra("picInfoList", (ArrayList) picInfoList);
+                intent.putExtra("position", position);
                 context.startActivity(intent);
 
             }
         });
+
+        if (lastPosition < position) {
+            ObjectAnimator.ofFloat(holder.itemView, "translationY",
+                    holder.itemView.getHeight() / 3, 0.0f).setDuration(250).start();
+            lastPosition = position;
+        }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picImage;
         public TextView descriptionText;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            picImage = (ImageView)itemView.findViewById(R.id.pic_image);
-            descriptionText = (TextView)itemView.findViewById(R.id.desc_text);
+            picImage = (ImageView) itemView.findViewById(R.id.pic_image);
+            descriptionText = (TextView) itemView.findViewById(R.id.desc_text);
         }
     }
 }

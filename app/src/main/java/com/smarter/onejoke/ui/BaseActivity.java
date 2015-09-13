@@ -4,14 +4,14 @@ package com.smarter.onejoke.ui;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.smarter.onejoke.utils.SystemBarTintManager;
 import com.umeng.analytics.MobclickAgent;
 
-public class BaseActivity extends ActionBarActivity {
+public class BaseActivity extends AppCompatActivity {
 
     protected SystemBarTintManager mTintManager;
 
