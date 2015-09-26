@@ -72,8 +72,6 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_detail);
 
-        mTintManager.setStatusBarTintEnabled(true);
-        mTintManager.setStatusBarTintResource(R.color.light_blue);
 
         viewPager = (ViewPager) findViewById(R.id.pic_detail_pager);
 
@@ -87,7 +85,7 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
             viewPager.setCurrentItem(position);
             getSupportActionBar().setTitle((position+1) + "/" + picInfoList.size());
         }
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

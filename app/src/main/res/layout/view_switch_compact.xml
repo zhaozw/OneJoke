@@ -2,11 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/switchCompat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="4dp"
         android:checked="false"
-        android:shadowColor="@color/light_black"/>
+        android:shadowColor="@color/light_black" />
+
 </RelativeLayout>

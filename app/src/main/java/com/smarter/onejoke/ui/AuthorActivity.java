@@ -11,8 +11,6 @@ public class AuthorActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_author);
-        mTintManager.setStatusBarTintEnabled(true);
-        mTintManager.setStatusBarTintResource(R.color.light_blue);
 
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
     }

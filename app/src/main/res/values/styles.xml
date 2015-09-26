@@ -2,30 +2,31 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <!--<item name="android:background">@color/dark_white</item>-->
-        <item name="colorPrimary">@color/light_blue</item>
-        <item name="colorPrimaryDark">@color/dark_blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondaryInverse</item>
+        <item name="android:windowContentOverlay">@null</item>
+
     </style>
+
+    <style name="AppTheme.Dark" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/colorPrimaryInverse</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkInverse</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/light_grey</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryInverse</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimary</item>
+        <item name="android:textColorSecondaryInverse">@color/textColorSecondary</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
     <style name="AppTheme.PicDetail" parent="AppTheme">
         <item name="windowActionBarOverlay">true</item>
     </style>
 
-   <!-- <style name="AppTheme" parent="AppBaseTheme">
-        &lt;!&ndash; All customizations that are NOT specific to a particular API-level can go here. &ndash;&gt;
-    </style>
-
-    &lt;!&ndash; 日间主题 &ndash;&gt;
-    <style name="DayTheme" parent="AppTheme">
-        <item name="root_view_bg">@mipmap/bg_day</item>
-        <item name="btn_bg">@color/white_btn_color</item>
-        <item name="text_color">@color/black_tx_color</item>
-    </style>
-
-    &lt;!&ndash; 夜间主题 &ndash;&gt;
-    <style name="NightTheme" parent="AppTheme">
-        <item name="root_view_bg">@mipmap/bg_night</item>
-        <item name="btn_bg">@color/black_btn_color</item>
-        <item name="text_color">@color/white_tx_color</item>
-    </style>-->
 </resources>

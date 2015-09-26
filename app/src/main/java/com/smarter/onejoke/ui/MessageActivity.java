@@ -27,8 +27,6 @@ public class MessageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        mTintManager.setStatusBarTintEnabled(true);
-        mTintManager.setStatusBarTintResource(R.color.light_blue);
         listView = (ListView)findViewById(R.id.message_list);
 
         preferences = getSharedPreferences("MESSAGE",0);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -54,24 +55,25 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
     }
 
 
-
-
-    private void init(){
-        mTintManager.setStatusBarTintEnabled(true);
-        mTintManager.setStatusBarTintResource(R.color.light_blue);
+    private void init() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
         //友盟检查更新
         UmengUpdateAgent.update(this);
-        //友盟用户反馈
         agent = new FeedbackAgent(this);
         agent.sync();
     }
 
-    private void initViewPager(){
+    private void initViewPager() {
         tabHost = (MaterialTabHost) findViewById(R.id.materialTabHost);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
+        if (PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("pref_dark_theme", false)) {
+            tabHost.setPrimaryColor(getResources().getColor(R.color.colorPrimaryInverse));
+        } else {
+            tabHost.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
+        }
 
         pageAdapter = new MyPageAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pageAdapter);
@@ -106,17 +108,21 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
                     public void onClickAd() {
 
                     }
+
                     @Override
                     public void onDisplayAd() {
 
                     }
+
                     @Override
                     public void onAdDismiss() {
                     }
+
                     @Override
                     public void onReceivedAd(int i, View view) {
                         adView = adInstlManager.getContentView();
                     }
+
                     @Override
                     public void onReceivedAdFailed(String s) {
                     }
@@ -134,10 +140,16 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
         MenuItemCompat.setActionView(switchItem, R.layout.view_switch_compact);
         final SwitchCompat switchCompat = (SwitchCompat) switchItem.getActionView()
                 .findViewById(R.id.switchCompat);
+        switchCompat.setChecked(PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("pref_dark_theme", false));
+        switchCompat.setThumbResource(R.drawable.switch_thumb);
+        switchCompat.setTrackResource(R.mipmap.switch_bg);
         switchCompat.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean("pref_dark_theme", isChecked).commit();
+                        MainActivity.this.recreate();
                     }
                 }
         );
@@ -193,9 +205,9 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
     }
 
 
-    private void showDialog(){
+    private void showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if (adView != null){
+        if (adView != null) {
             if (adView.getParent() != null) {
                 ((ViewGroup) adView.getParent()).removeView(adView);
             }
@@ -215,7 +227,7 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
                 }
             });
             builder.create().show();
-        }else {
+        } else {
             builder.setTitle("确定要退出吗？");
             builder.setNegativeButton("再看看", new DialogInterface.OnClickListener() {
                 @Override
@@ -233,6 +245,7 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
             builder.create().show();
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

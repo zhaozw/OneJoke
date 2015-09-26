@@ -4,7 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.1'
 
-   /* productFlavors {
+    productFlavors {
         Umeng {}
         Xiaomi {}
         Meizu {}
@@ -14,14 +14,14 @@ android {
 
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-    }*/
+    }
 
     defaultConfig {
         applicationId "com.smarter.onejoke"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.0.8"
+        versionCode 9
+        versionName "1.0.9"
     }
     buildTypes {
         release {

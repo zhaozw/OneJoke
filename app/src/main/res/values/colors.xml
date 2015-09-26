@@ -4,7 +4,7 @@
     <color name="dark_blue">#303f9f</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
-    <color name="grey">#ff6e6c6e</color>
+    <color name="grey">#9f9f9f</color>
     <color name="green">#398430</color>
     <color name="orange">#b3412a</color>
     <color name="dark_white">#fff0f0f0</color>
@@ -18,4 +18,21 @@
     <!-- 夜间模式 -->
     <color name="black_btn_color">#aa7788</color>
     <color name="white_tx_color">#f0f0f0</color>
+
+
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303f9f</color>
+    <color name="colorPrimaryLight">#FFE0B2</color>
+    <!-- accent color: red -->
+    <color name="colorAccent">#FF5252</color>
+    <!-- text color: white -->
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="textColorSecondary">#545454</color>
+    <!-- inverse text color: 87% black -->
+    <color name="textColorPrimaryInverse">#DE000000</color>
+    <color name="textColorSecondaryInverse">#767676</color>
+
+    <color name="colorPrimaryInverse">#1b1b1b</color>
+    <color name="colorPrimaryDarkInverse">#151515</color>
+    <color name="colorAccentInverse">#999999</color>
 </resources>
