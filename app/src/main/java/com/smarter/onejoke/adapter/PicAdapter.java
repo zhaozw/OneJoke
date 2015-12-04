@@ -16,7 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.ui.PicDetailActivity;
-import com.smarter.onejoke.utils.PicInfo;
+import com.smarter.onejoke.model.PicInfo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -12,31 +12,21 @@ import com.kyview.AdViewTargeting;
 import com.kyview.interfaces.AdViewInterface;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.PicPageAdapter;
-import com.smarter.onejoke.utils.PicInfo;
-import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.smarter.onejoke.model.PicInfo;
+import com.smarter.onejoke.utils.ShareUtils;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
-import com.umeng.socialize.media.QQShareContent;
-import com.umeng.socialize.media.QZoneShareContent;
-import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.RenrenSsoHandler;
-import com.umeng.socialize.sso.SinaSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
-import com.umeng.socialize.sso.UMQQSsoHandler;
 import com.umeng.socialize.sso.UMSsoHandler;
-import com.umeng.socialize.weixin.controller.UMWXHandler;
-import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PicDetailActivity extends BaseActivity implements AdViewInterface{
+public class PicDetailActivity extends BaseActivity implements AdViewInterface {
 
     private ViewPager viewPager;
     private List<PicInfo> picInfoList = new ArrayList<>();
     private PicPageAdapter picPageAdapter;
-    private int position ;
+    private int position;
     private LinearLayout layout;
     private AdViewStream viewStream;
     private int count = 0;
@@ -52,15 +42,15 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
         super.onStart();
         AdViewTargeting.setAdSize(AdViewTargeting.AdSize.BANNER_SMART);
         AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
-        layout = (LinearLayout)findViewById(R.id.ad_banner);
+        layout = (LinearLayout) findViewById(R.id.ad_banner);
         getBannerAd();
     }
 
-    private void getBannerAd(){
+    private void getBannerAd() {
         if (layout == null)
             return;
         layout.removeAllViews();
-        viewStream = new AdViewStream(this,"SDK20151024100234gyduoom2dq8xm63");
+        viewStream = new AdViewStream(this, "SDK20151024100234gyduoom2dq8xm63");
         viewStream.setAdViewInterface(this);
         layout.addView(viewStream);
         layout.invalidate();
@@ -76,14 +66,14 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
         viewPager = (ViewPager) findViewById(R.id.pic_detail_pager);
 
         Intent intent = getIntent();
-        position = intent.getIntExtra("position",0);
-        picInfoList = (List)intent.getCharSequenceArrayListExtra("picInfoList");
-        if (picInfoList.size()>0) {
+        position = intent.getIntExtra("position", 0);
+        picInfoList = (List) intent.getCharSequenceArrayListExtra("picInfoList");
+        if (picInfoList.size() > 0) {
 
             picPageAdapter = new PicPageAdapter(picInfoList, this);
             viewPager.setAdapter(picPageAdapter);
             viewPager.setCurrentItem(position);
-            getSupportActionBar().setTitle((position+1) + "/" + picInfoList.size());
+            getSupportActionBar().setTitle((position + 1) + "/" + picInfoList.size());
         }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -93,7 +83,7 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
 
             @Override
             public void onPageSelected(int i) {
-                getSupportActionBar().setTitle((i+1)+"/"+picInfoList.size());
+                getSupportActionBar().setTitle((i + 1) + "/" + picInfoList.size());
                 position = i;
             }
 
@@ -102,73 +92,6 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
 
             }
         });
-
-    }
-
-    private void setShareConfig(){
-        mController.getConfig().setPlatformOrder(SHARE_MEDIA.SINA,SHARE_MEDIA.TENCENT,
-                SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE,SHARE_MEDIA.QQ,
-                SHARE_MEDIA.QZONE,SHARE_MEDIA.RENREN);
-
-
-        // 添加微信平台
-        UMWXHandler wxHandler = new UMWXHandler(this,weixinAppID,weixinAppSecret);
-        wxHandler.addToSocialSDK();
-        // 添加微信朋友圈
-        UMWXHandler wxCircleHandler = new UMWXHandler(this,weixinAppID,weixinAppSecret);
-        wxCircleHandler.setToCircle(true);
-        wxCircleHandler.addToSocialSDK();
-
-        UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, "100424468",
-                "c7394704798a158208a74ab60104f0ba");
-        qqSsoHandler.addToSocialSDK();
-
-        //参数1为当前Activity，参数2为开发者在QQ互联申请的APP ID，参数3为开发者在QQ互联申请的APP kEY.
-        QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, "100424468",
-                "c7394704798a158208a74ab60104f0ba");
-        qZoneSsoHandler.addToSocialSDK();
-
-        //设置新浪SSO handler
-        mController.getConfig().setSsoHandler(new SinaSsoHandler());
-        //设置腾讯微博SSO handler
-        mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
-
-
-        //添加人人网SSO授权功能
-        //APPID:201874
-        //API Key:28401c0964f04a72a14c812d6132fcef
-        //Secret:3bf66e42db1e4fa9829b955cc300b737
-        RenrenSsoHandler renrenSsoHandler = new RenrenSsoHandler(this,
-                "201874", "28401c0964f04a72a14c812d6132fcef",
-                "3bf66e42db1e4fa9829b955cc300b737");
-        renrenSsoHandler.addToSocialSDK();
-        mController.getConfig().setSsoHandler(renrenSsoHandler);
-
-
-        WeiXinShareContent weiXinShareContent = new WeiXinShareContent();
-        weiXinShareContent.setShareContent(picInfoList.get(position).getDescription()
-                +"\n"+"下载地址:"+"http://www.wandoujia.com/apps/com.smarter.onejoke");
-        weiXinShareContent.setTargetUrl("http://www.wandoujia.com/apps/com.smarter.onejoke");
-        mController.setShareMedia(weiXinShareContent);
-
-
-        QQShareContent qqShareContent = new QQShareContent();
-        qqShareContent.setShareContent(picInfoList.get(position).getDescription()
-                +"\n"+"下载地址:"+"http://www.wandoujia.com/apps/com.smarter.onejoke");
-        qqShareContent.setTargetUrl("http://www.wandoujia.com/apps/com.smarter.onejoke");
-        mController.setShareMedia(qqShareContent);
-
-        QZoneShareContent qZoneShareContent = new QZoneShareContent();
-        qZoneShareContent.setShareContent(picInfoList.get(position).getDescription()
-                +"\n"+"下载地址:"+"http://www.wandoujia.com/apps/com.smarter.onejoke");
-        qZoneShareContent.setTargetUrl("http://www.wandoujia.com/apps/com.smarter.onejoke");
-        mController.setShareMedia(qZoneShareContent);
-        // 设置分享内容
-        mController.setShareContent(picInfoList.get(position).getDescription()
-                +"\n"+"下载地址:"+"http://www.wandoujia.com/apps/com.smarter.onejoke");
-        mController.setShareMedia(new UMImage(this,
-                picInfoList.get(position).getPicUrl()));
-        mController.openShare(this,false);
 
     }
 
@@ -189,22 +112,22 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_share) {
-            setShareConfig();
-
+            ShareUtils.shareToOther(this, picInfoList.get(position).getDescription(), picInfoList.get(position).getPicUrl());
             return true;
-        }else if (id == android.R.id.home){
+        } else if (id == android.R.id.home) {
             onBackPressed();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         /**使用SSO授权必须添加如下代码 */
-        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
-        if(ssoHandler != null){
+        UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode);
+        if (ssoHandler != null) {
             ssoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
     }
@@ -213,9 +136,9 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface{
     @Override
     public void onClosedAd() {
         count++;
-        if (count < 3){
+        if (count < 3) {
             getBannerAd();
-        }else {
+        } else {
             viewStream.setClosed(true);
 
         }

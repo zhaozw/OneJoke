@@ -1,4 +1,4 @@
-package com.smarter.onejoke.utils;
+package com.smarter.onejoke.model;
 
 import java.io.Serializable;
 

@@ -19,11 +19,9 @@ import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.JokeAdapter;
+import com.smarter.onejoke.model.JokeInfo;
 import com.smarter.onejoke.utils.JokeClient;
-import com.smarter.onejoke.utils.JokeInfo;
 import com.thinkland.sdk.android.Parameters;
-import com.umeng.socialize.controller.UMServiceFactory;
-import com.umeng.socialize.controller.UMSocialService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,24 +46,23 @@ public class JokeFragment extends Fragment {
     private List<JokeInfo> jokeInfoList = new ArrayList<>();
     private long currentTime;
 
-    final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 
-
-    private final Handler handler = new Handler(){
+    private Handler handler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             refreshLayout.setRefreshing(false);
-            if (msg.what==0){
+            if (msg.what == 0) {
                 refreshLayout.setRefreshing(false);
-                String jokeResult = (String)msg.obj;
+                String jokeResult = (String) msg.obj;
                 paseJsonAndShowList(jokeResult);
-            }else if (msg.what == 1){
-                String reason = (String)msg.obj;
+            } else if (msg.what == 1) {
+                String reason = (String) msg.obj;
                 Toast.makeText(getActivity(), reason, Toast.LENGTH_SHORT).show();
             }
         }
     };
+
     public JokeFragment() {
         // Required empty public constructor
     }
@@ -80,20 +77,20 @@ public class JokeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View jokeView = inflater.inflate(R.layout.fragment_joke,container,false);
-        recyclerView = (RecyclerView)jokeView.findViewById(R.id.recycler_joke);
-        floatingActionButton = (FloatingActionButton)jokeView.findViewById(R.id.fab_joke);
+        View jokeView = inflater.inflate(R.layout.fragment_joke, container, false);
+        recyclerView = (RecyclerView) jokeView.findViewById(R.id.recycler_joke);
+        floatingActionButton = (FloatingActionButton) jokeView.findViewById(R.id.fab_joke);
         if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean("pref_dark_theme", false)){
+                .getBoolean("pref_dark_theme", false)) {
             floatingActionButton.setColorNormal(getResources().getColor(R.color.colorPrimaryInverse));
-        }else {
+        } else {
             floatingActionButton.setColorNormal(getResources().getColor(R.color.colorPrimary));
         }
-        refreshLayout = (SwipeRefreshLayout)jokeView.findViewById(R.id.refresh_joke);
+        refreshLayout = (SwipeRefreshLayout) jokeView.findViewById(R.id.refresh_joke);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         floatingActionButton.hide(false);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +108,9 @@ public class JokeFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-             refreshLayout.setRefreshing(true);
+                refreshLayout.setRefreshing(true);
             }
-        },250);
+        }, 250);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -128,13 +125,13 @@ public class JokeFragment extends Fragment {
                 int lastVisibleItem = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
                 int totalItemCount = layoutManager.getItemCount();
 
-                if (lastVisibleItem == totalItemCount-1 && dy > 0) {
+                if (lastVisibleItem == totalItemCount - 1 && dy > 0) {
                     refreshLayout.setRefreshing(true);
-                        getMoreData();
+                    getMoreData();
                 }
-                if (dy>0){
+                if (dy > 0) {
                     floatingActionButton.hide();
-                }else {
+                } else {
                     floatingActionButton.show();
                 }
 
@@ -146,12 +143,12 @@ public class JokeFragment extends Fragment {
         return jokeView;
     }
 
-    private void paseJsonAndShowList(String jokeResult){
+    private void paseJsonAndShowList(String jokeResult) {
         try {
             JSONObject object_joke = new JSONObject(jokeResult);
-            Log.i("object_joke",object_joke.toString());
+            Log.i("object_joke", object_joke.toString());
             long resultCode = object_joke.getLong("error_code");
-            Log.i("redultCode",resultCode+"");
+            Log.i("redultCode", resultCode + "");
             if (resultCode == 0) {
                 JSONObject object = object_joke.getJSONObject("result");
                 if (jokeFlag == 0) {
@@ -172,11 +169,11 @@ public class JokeFragment extends Fragment {
                         Log.i("data", content);
 
                     }
-                    jokeAdapter = new JokeAdapter(jokeInfoList, mController, getActivity());
+                    jokeAdapter = new JokeAdapter(jokeInfoList, getActivity());
                     recyclerView.setAdapter(jokeAdapter);
                     floatingActionButton.show();
 
-                }else if (jokeFlag == 1){
+                } else if (jokeFlag == 1) {
                     JSONArray jsonArray = object.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
@@ -192,33 +189,33 @@ public class JokeFragment extends Fragment {
 
                     }
                     jokeAdapter.notifyDataSetChanged();
-                    Log.i("JokeSize",jokeInfoList.size()+"");
+                    Log.i("JokeSize", jokeInfoList.size() + "");
                 }
 
-            }else {
-                Toast.makeText(getActivity(),object_joke.getString("reason"),Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), object_joke.getString("reason"), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void getJokeData(){
+    private void getJokeData() {
         jokeFlag = 0;
-        currentTime = System.currentTimeMillis()/1000;
-        Log.i("currentTime--->",currentTime+"");
+        currentTime = System.currentTimeMillis() / 1000;
+        Log.i("currentTime--->", currentTime + "");
         Parameters parameters = new Parameters();
-        parameters.add("sort","desc");
-        parameters.add("page",1);
-        parameters.add("pagesize",20);
-        parameters.add("time",currentTime);
-        JokeClient.getJoke(BASE_URL,parameters,handler);
+        parameters.add("sort", "desc");
+        parameters.add("page", 1);
+        parameters.add("pagesize", 20);
+        parameters.add("time", currentTime);
+        JokeClient.getJoke(BASE_URL, parameters, handler);
     }
 
-    private void getMoreData(){
+    private void getMoreData() {
         jokeFlag = 1;
-        if (currentTime != jokeInfoList.get(jokeInfoList.size()-1).getUnixTime()) {
-            currentTime = jokeInfoList.get(jokeInfoList.size()-1).getUnixTime();
+        if (currentTime != jokeInfoList.get(jokeInfoList.size() - 1).getUnixTime()) {
+            currentTime = jokeInfoList.get(jokeInfoList.size() - 1).getUnixTime();
             Parameters parameters = new Parameters();
             parameters.add("sort", "desc");
             parameters.add("page", 1);

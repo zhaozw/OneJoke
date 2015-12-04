@@ -20,7 +20,7 @@ import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.PicAdapter;
 import com.smarter.onejoke.utils.JokeClient;
-import com.smarter.onejoke.utils.PicInfo;
+import com.smarter.onejoke.model.PicInfo;
 import com.thinkland.sdk.android.Parameters;
 
 import org.json.JSONArray;

@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.customview.ExpandableTextView;
-import com.smarter.onejoke.utils.PicInfo;
+import com.smarter.onejoke.model.PicInfo;
 
 import java.util.List;
 

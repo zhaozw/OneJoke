@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     productFlavors {
         Umeng {}
@@ -10,6 +10,8 @@ android {
         Meizu {}
         Baidu {}
         Wandoujia {}
+        Tencent {}
+        Qihu_360 {}
     }
 
     productFlavors.all {
