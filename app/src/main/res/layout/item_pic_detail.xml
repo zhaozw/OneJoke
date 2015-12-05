@@ -13,6 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true" />
+    <com.felipecsl.gifimageview.library.GifImageView
+        android:id="@+id/gif_picture_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"/>
 
     <com.smarter.onejoke.customview.ExpandableTextView
         android:id="@+id/content_pic_text"

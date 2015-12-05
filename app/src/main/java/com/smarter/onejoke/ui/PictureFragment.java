@@ -154,7 +154,7 @@ public class PictureFragment extends Fragment {
                         PicInfo picInfo = new PicInfo();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String picUrl = jsonObject.getString("url");
-                                if (!picUrl.endsWith(".gif")) {
+                                /*if (!picUrl.endsWith(".gif")) {
                                     picInfo.setPicUrl(picUrl);
                                     String description = jsonObject.getString("content");
                                     picInfo.setDescription(description);
@@ -162,13 +162,13 @@ public class PictureFragment extends Fragment {
                                     Log.i("UnixTime",unixTime+"");
                                     picInfo.setUnixTime(unixTime);
                                     picInfoList.add(picInfo);
-                                }
-//                        picInfo.setPicUrl(picUrl);
-//                        String description = jsonObject.getString("content");
-//                        picInfo.setDescription(description);
-//                        long unixTime = jsonObject.getLong("unixtime");
-//                        picInfo.setUnixTime(unixTime);
-//                        picInfoList.add(picInfo);
+                                }*/
+                        picInfo.setPicUrl(picUrl);
+                        String description = jsonObject.getString("content");
+                        picInfo.setDescription(description);
+                        long unixTime = jsonObject.getLong("unixtime");
+                        picInfo.setUnixTime(unixTime);
+                        picInfoList.add(picInfo);
                     }
                     picAdapter = new PicAdapter(picInfoList, getActivity());
                     recyclerView.setAdapter(picAdapter);

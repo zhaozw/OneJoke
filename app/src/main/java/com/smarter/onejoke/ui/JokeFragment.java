@@ -138,6 +138,9 @@ public class JokeFragment extends Fragment {
             }
         });
 
+        jokeAdapter = new JokeAdapter(jokeInfoList, getActivity());
+        recyclerView.setAdapter(jokeAdapter);
+
         getJokeData();
 
         return jokeView;
@@ -156,38 +159,13 @@ public class JokeFragment extends Fragment {
 
                     Log.i("object", object.toString());
                     JSONArray jsonArray = object.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        String content = jsonObject.getString("content");
-                        String updateTime = jsonObject.getString("updatetime");
-                        long unixTime = jsonObject.getLong("unixtime");
-                        JokeInfo jokeInfo = new JokeInfo();
-                        jokeInfo.setContents(content);
-                        jokeInfo.setUpdateTime(updateTime);
-                        jokeInfo.setUnixTime(unixTime);
-                        jokeInfoList.add(jokeInfo);
-                        Log.i("data", content);
-
-                    }
-                    jokeAdapter = new JokeAdapter(jokeInfoList, getActivity());
-                    recyclerView.setAdapter(jokeAdapter);
+                    parseJson(jsonArray);
+                    jokeAdapter.notifyDataSetChanged();
                     floatingActionButton.show();
 
                 } else if (jokeFlag == 1) {
                     JSONArray jsonArray = object.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                        String content = jsonObject.getString("content");
-                        String updateTime = jsonObject.getString("updatetime");
-                        long unixTime = jsonObject.getLong("unixtime");
-                        JokeInfo jokeInfo = new JokeInfo();
-                        jokeInfo.setContents(content);
-                        jokeInfo.setUpdateTime(updateTime);
-                        jokeInfo.setUnixTime(unixTime);
-                        jokeInfoList.add(jokeInfo);
-                        Log.i("data", content);
-
-                    }
+                    parseJson(jsonArray);
                     jokeAdapter.notifyDataSetChanged();
                     Log.i("JokeSize", jokeInfoList.size() + "");
                 }
@@ -197,6 +175,22 @@ public class JokeFragment extends Fragment {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void parseJson(JSONArray jsonArray) throws JSONException {
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            String content = jsonObject.getString("content");
+            String updateTime = jsonObject.getString("updatetime");
+            long unixTime = jsonObject.getLong("unixtime");
+            JokeInfo jokeInfo = new JokeInfo();
+            jokeInfo.setContents(content);
+            jokeInfo.setUpdateTime(updateTime);
+            jokeInfo.setUnixTime(unixTime);
+            jokeInfoList.add(jokeInfo);
+            Log.i("data", content);
+
         }
     }
 
