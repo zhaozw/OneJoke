@@ -5,21 +5,12 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.thinkland.sdk.android.SDKInitializer;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -59,9 +50,9 @@ public class MyApplication extends Application {
         };
         Logger.setLogger(this, newLogger);
 
-        initImageLoader();
-
+        Fresco.initialize(this);
     }
+
     private boolean shouldInit() {
         ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
         List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
@@ -79,21 +70,4 @@ public class MyApplication extends Application {
         return context;
     }
 
-    private void initImageLoader(){
-        File cacheDir = StorageUtils.getOwnCacheDirectory(
-                getApplicationContext(), "Pictures/OneJoke");
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .threadPoolSize(3) // default
-                .threadPriority(Thread.NORM_PRIORITY - 2) // default
-                .tasksProcessingOrder(QueueProcessingType.FIFO) // default
-                .memoryCacheSizePercentage(13) // default
-                .diskCache(new UnlimitedDiscCache(cacheDir)) // default
-                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
-                .imageDownloader(new BaseImageDownloader(context)) // default
-                .imageDecoder(new BaseImageDecoder(true)) // default
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple()) // default
-                .writeDebugLogs()
-                .build();
-        ImageLoader.getInstance().init(config);
-    }
 }

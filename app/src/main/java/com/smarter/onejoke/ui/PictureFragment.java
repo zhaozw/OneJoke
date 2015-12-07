@@ -154,15 +154,6 @@ public class PictureFragment extends Fragment {
                         PicInfo picInfo = new PicInfo();
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         String picUrl = jsonObject.getString("url");
-                                /*if (!picUrl.endsWith(".gif")) {
-                                    picInfo.setPicUrl(picUrl);
-                                    String description = jsonObject.getString("content");
-                                    picInfo.setDescription(description);
-                                    long unixTime = jsonObject.getLong("unixtime");
-                                    Log.i("UnixTime",unixTime+"");
-                                    picInfo.setUnixTime(unixTime);
-                                    picInfoList.add(picInfo);
-                                }*/
                         picInfo.setPicUrl(picUrl);
                         String description = jsonObject.getString("content");
                         picInfo.setDescription(description);

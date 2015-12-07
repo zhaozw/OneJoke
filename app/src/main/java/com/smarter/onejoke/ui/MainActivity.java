@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
             tabHost.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
         }
 
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager());
+        pageAdapter = new MyPageAdapter(getSupportFragmentManager(),this);
         viewPager.setAdapter(pageAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
