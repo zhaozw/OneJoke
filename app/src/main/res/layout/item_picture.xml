@@ -2,33 +2,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical"
-        android:padding="5dp">
 
         <com.balysv.materialripple.MaterialRippleLayout
             android:id="@+id/ripple"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-           <!-- <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/pic_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:background="@mipmap/pic_default"
-                android:scaleType="centerCrop" />-->
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/pic_image"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
                 fresco:placeholderImage="@mipmap/pic_default"
+                fresco:placeholderImageScaleType="fitCenter"
+                fresco:roundedCornerRadius="5dp"
                 />
         </com.balysv.materialripple.MaterialRippleLayout>
 
@@ -41,8 +30,6 @@
             android:singleLine="true"
             android:textSize="16sp"
             android:textStyle="normal" />
-    </LinearLayout>
-
 
 </LinearLayout>
 

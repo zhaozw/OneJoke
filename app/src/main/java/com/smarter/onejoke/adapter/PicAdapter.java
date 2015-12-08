@@ -65,7 +65,7 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
         if (lastPosition < position) {
             ObjectAnimator.ofFloat(holder.itemView, "translationY",
-                    holder.itemView.getHeight() / 3, 0.0f).setDuration(400).start();
+                    holder.itemView.getHeight() / 2, 0.0f).setDuration(400).start();
             lastPosition = position;
         }
     }

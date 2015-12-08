@@ -105,12 +105,15 @@ public class JokeFragment extends Fragment {
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark,
                 android.R.color.holo_purple);
-        handler.postDelayed(new Runnable() {
+
+        refreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 refreshLayout.setRefreshing(true);
+                getJokeData();
             }
-        }, 250);
+        });
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -140,8 +143,6 @@ public class JokeFragment extends Fragment {
 
         jokeAdapter = new JokeAdapter(jokeInfoList, getActivity());
         recyclerView.setAdapter(jokeAdapter);
-
-        getJokeData();
 
         return jokeView;
     }
@@ -203,7 +204,7 @@ public class JokeFragment extends Fragment {
         parameters.add("page", 1);
         parameters.add("pagesize", 20);
         parameters.add("time", currentTime);
-        JokeClient.getJoke(BASE_URL, parameters, handler);
+        JokeClient.getJoke(getActivity(),BASE_URL, parameters, handler);
     }
 
     private void getMoreData() {
@@ -215,7 +216,7 @@ public class JokeFragment extends Fragment {
             parameters.add("page", 1);
             parameters.add("pagesize", 20);
             parameters.add("time", currentTime);
-            JokeClient.getJoke(BASE_URL, parameters, handler);
+            JokeClient.getJoke(getActivity(),BASE_URL, parameters, handler);
         }
     }
 

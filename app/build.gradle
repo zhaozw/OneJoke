@@ -35,10 +35,17 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 repositories {
     mavenCentral()
 }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

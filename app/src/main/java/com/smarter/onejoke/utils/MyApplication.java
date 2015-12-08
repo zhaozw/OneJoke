@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.thinkland.sdk.android.SDKInitializer;
+import com.thinkland.sdk.android.JuheSDKInitializer;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -14,6 +14,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 import java.util.List;
 
 /**
+ * app
  * Created by panl on 15/2/8.
  */
 public class MyApplication extends Application {
@@ -27,7 +28,8 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         //聚合数据sdk初始化
-        SDKInitializer.initialize(getApplicationContext());
+        JuheSDKInitializer.initialize(context);
+
         //小米推送
         //初始化push推送服务
         if(shouldInit()) {
