@@ -3,7 +3,6 @@ package com.smarter.onejoke.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 
 import com.smarter.onejoke.R;
 
@@ -11,11 +10,8 @@ public class WelcomeActivity extends BaseActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean("pref_dark_theme", false)) {
-            setTheme(R.style.AppTheme_Dark);
-        }
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme_NoActionBar);
         setContentView(R.layout.activity_welcome);
         mTintManager.setStatusBarDarkMode(true,this);
         mTintManager.setStatusBarTintEnabled(false);
