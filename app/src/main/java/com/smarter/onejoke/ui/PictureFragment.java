@@ -4,8 +4,6 @@ package com.smarter.onejoke.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.smarter.onejoke.R;
-import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.PicAdapter;
 import com.smarter.onejoke.model.PicInfo;
 import com.smarter.onejoke.utils.JokeClient;
@@ -42,7 +39,6 @@ public class PictureFragment extends Fragment {
 
     private List<PicInfo> picInfoList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private FloatingActionButton fabPic;
     private SwipeRefreshLayout refreshLayout;
     private RecyclerView.LayoutManager layoutManager;
     private PicAdapter picAdapter;
@@ -78,14 +74,8 @@ public class PictureFragment extends Fragment {
         recyclerView = (RecyclerView) picView.findViewById(R.id.recycler_pic);
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
 
-        fabPic = (FloatingActionButton) picView.findViewById(R.id.fab_picture);
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean("pref_dark_theme", false)) {
-        } else {
-        }
         refreshLayout = (SwipeRefreshLayout) picView.findViewById(R.id.refresh_pic);
         refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,
                 android.R.color.holo_orange_dark,
@@ -100,13 +90,6 @@ public class PictureFragment extends Fragment {
             }
         });
 
-        fabPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshLayout.setRefreshing(true);
-                getPicData();
-            }
-        });
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -144,7 +127,6 @@ public class PictureFragment extends Fragment {
                     JSONArray jsonArray = object.getJSONArray("data");
                     parseJson(jsonArray);
                     picAdapter.notifyDataSetChanged();
-                    fabPic.show();
                 } else if (picFlag == 1) {
                     JSONArray jsonArray = object.getJSONArray("data");
 

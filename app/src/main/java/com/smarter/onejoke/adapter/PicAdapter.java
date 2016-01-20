@@ -19,11 +19,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 显示图片
  * Created by panl on 15/2/10.
  */
 public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
+
 
 
     private List<PicInfo> picInfoList = new ArrayList<>();
@@ -37,10 +41,9 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     }
 
     @Override
-    public PicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View picView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
-        ViewHolder viewHolder = new ViewHolder(picView);
-        return viewHolder;
+        return new ViewHolder(picView);
     }
 
     @Override
@@ -49,8 +52,8 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(PicAdapter.ViewHolder holder, final int position) {
-        holder.descriptionText.setText(picInfoList.get(position).getDescription());
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        holder.descText.setText(picInfoList.get(position).getDescription());
         FrescoUtils.displayImage(picInfoList.get(position).getPicUrl(), holder.picImage);
         holder.picImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +74,14 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public SimpleDraweeView picImage;
-        public TextView descriptionText;
+        @Bind(R.id.pic_image)
+        SimpleDraweeView picImage;
+        @Bind(R.id.desc_text)
+        TextView descText;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            picImage = (SimpleDraweeView) itemView.findViewById(R.id.pic_image);
-            descriptionText = (TextView) itemView.findViewById(R.id.desc_text);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

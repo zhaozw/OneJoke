@@ -4,7 +4,6 @@ package com.smarter.onejoke.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.smarter.onejoke.R;
-import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.JokeAdapter;
 import com.smarter.onejoke.model.JokeInfo;
 import com.smarter.onejoke.utils.JokeClient;
@@ -40,7 +38,6 @@ public class JokeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter jokeAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private FloatingActionButton floatingActionButton;
     private SwipeRefreshLayout refreshLayout;
     private List<JokeInfo> jokeInfoList = new ArrayList<>();
     private long currentTime;
@@ -78,13 +75,11 @@ public class JokeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View jokeView = inflater.inflate(R.layout.fragment_joke, container, false);
         recyclerView = (RecyclerView) jokeView.findViewById(R.id.recycler_joke);
-        floatingActionButton = (FloatingActionButton) jokeView.findViewById(R.id.fab_joke);
 
         refreshLayout = (SwipeRefreshLayout) jokeView.findViewById(R.id.refresh_joke);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 
 
         refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,
@@ -118,11 +113,6 @@ public class JokeFragment extends Fragment {
                     refreshLayout.setRefreshing(true);
                     getMoreData();
                 }
-                if (dy > 0) {
-                    floatingActionButton.hide();
-                } else {
-                    floatingActionButton.show();
-                }
 
             }
         });
@@ -148,7 +138,6 @@ public class JokeFragment extends Fragment {
                     JSONArray jsonArray = object.getJSONArray("data");
                     parseJson(jsonArray);
                     jokeAdapter.notifyDataSetChanged();
-                    floatingActionButton.show();
 
                 } else if (jokeFlag == 1) {
                     JSONArray jsonArray = object.getJSONArray("data");

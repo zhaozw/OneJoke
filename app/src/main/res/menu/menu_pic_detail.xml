@@ -4,5 +4,6 @@
     tools:context="com.smarter.onejoke.ui.PicDetailActivity">
     <item android:id="@+id/action_share"
         android:title="@string/action_share"
+        android:icon="@mipmap/ic_share_white"
         app:showAsAction="ifRoom"/>
 </menu>
