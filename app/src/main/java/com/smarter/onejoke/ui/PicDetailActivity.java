@@ -2,7 +2,9 @@ package com.smarter.onejoke.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -21,13 +23,22 @@ import com.umeng.socialize.sso.UMSsoHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class PicDetailActivity extends BaseActivity implements AdViewInterface {
 
-    private ViewPager viewPager;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBar;
+    @Bind(R.id.pic_detail_pager)
+    ViewPager viewPager;
+    @Bind(R.id.ad_banner)
+    LinearLayout layout;
     private List<PicInfo> picInfoList = new ArrayList<>();
     private PicPageAdapter picPageAdapter;
     private int position;
-    private LinearLayout layout;
     private AdViewStream viewStream;
     private int count = 0;
 
@@ -42,7 +53,6 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
         super.onStart();
         AdViewTargeting.setAdSize(AdViewTargeting.AdSize.BANNER_SMART);
         AdViewTargeting.setBannerSwitcherMode(AdViewTargeting.BannerSwitcher.CANCLOSED);
-        layout = (LinearLayout) findViewById(R.id.ad_banner);
         getBannerAd();
     }
 
@@ -61,9 +71,13 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_detail);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-        viewPager = (ViewPager) findViewById(R.id.pic_detail_pager);
 
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);

@@ -2,14 +2,16 @@ package com.smarter.onejoke.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,16 +29,20 @@ import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.sso.UMSsoHandler;
 import com.umeng.update.UmengUpdateAgent;
 
-import it.neokree.materialtabs.MaterialTab;
-import it.neokree.materialtabs.MaterialTabHost;
-import it.neokree.materialtabs.MaterialTabListener;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
+public class MainActivity extends BaseActivity {
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.view_pager)
+    ViewPager viewPager;
+    @Bind(R.id.root_view)
+    CoordinatorLayout rootView;
+    @Bind(R.id.tab_layout)
+    TabLayout tabLayout;
 
-public class MainActivity extends BaseActivity implements MaterialTabListener {
-    private MaterialTabHost tabHost;
-    private ViewPager viewPager;
     private MyPageAdapter pageAdapter;
-    private String[] tabTitle = {"每日笑话", "每日趣图"};
 
     //UmengSDK内容
     private FeedbackAgent agent;
@@ -50,15 +56,14 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         init();
         initViewPager();
     }
 
 
     private void init() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getSupportActionBar().setElevation(0);
-        }
+        setSupportActionBar(toolbar);
         //友盟检查更新
         UmengUpdateAgent.update(this);
         agent = new FeedbackAgent(this);
@@ -66,30 +71,12 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
     }
 
     private void initViewPager() {
-        tabHost = (MaterialTabHost) findViewById(R.id.materialTabHost);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        if (PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean("pref_dark_theme", false)) {
-            tabHost.setPrimaryColor(getResources().getColor(R.color.colorPrimaryInverse));
-        } else {
-            tabHost.setPrimaryColor(getResources().getColor(R.color.colorPrimary));
-        }
-
-        pageAdapter = new MyPageAdapter(getSupportFragmentManager(),this);
+        pageAdapter = new MyPageAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(pageAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                tabHost.setSelectedNavigationItem(position);
-            }
-        });
-        for (int i = 0; i < pageAdapter.getCount(); i++) {
-            tabHost.addTab(
-                    tabHost.newTab()
-                            .setText(tabTitle[i])
-                            .setTabListener(MainActivity.this)
-            );
-        }
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabsFromPagerAdapter(pageAdapter);
     }
 
 
@@ -158,14 +145,10 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_feedback) {
-            agent.startFeedbackActivity();
             return true;
         } else if (id == R.id.action_about) {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -180,20 +163,6 @@ public class MainActivity extends BaseActivity implements MaterialTabListener {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onTabReselected(MaterialTab materialTab) {
-
-    }
-
-    @Override
-    public void onTabUnselected(MaterialTab materialTab) {
-
-    }
-
-    @Override
-    public void onTabSelected(MaterialTab materialTab) {
-        viewPager.setCurrentItem(materialTab.getPosition());
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

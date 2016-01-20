@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.PicAdapter;
@@ -84,11 +84,8 @@ public class PictureFragment extends Fragment {
         fabPic = (FloatingActionButton) picView.findViewById(R.id.fab_picture);
         if (PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean("pref_dark_theme", false)) {
-            fabPic.setColorNormal(getResources().getColor(R.color.colorPrimaryInverse));
         } else {
-            fabPic.setColorNormal(getResources().getColor(R.color.colorPrimary));
         }
-        fabPic.hide(false);
         refreshLayout = (SwipeRefreshLayout) picView.findViewById(R.id.refresh_pic);
         refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,
                 android.R.color.holo_orange_dark,
@@ -127,11 +124,6 @@ public class PictureFragment extends Fragment {
                 if (lastVisibleItem == totalItemCount - 1 && dy > 0) {
                     refreshLayout.setRefreshing(true);
                     getMoreData();
-                }
-                if (dy > 0) {
-                    fabPic.hide();
-                } else {
-                    fabPic.show();
                 }
             }
         });

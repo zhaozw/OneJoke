@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.smarter.onejoke" >
+    package="com.smarter.onejoke">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -8,16 +8,14 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission
         android:name="com.smarter.onejoke.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature" />
-    <!-- 这里com.xiaomi.mipushdemo改成app的包名 -->
+
     <permission android:name="com.smarter.onejoke.permission.MIPUSH_RECEIVE" />
 
-    <!-- 这里com.xiaomi.mipushdemo改成app的包名 -->
     <application
         android:name=".utils.MyApplication"
         android:allowBackup="true"
@@ -31,42 +29,31 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="54db6581fd98c5c76d000665" />
-       <!-- <meta-data
+        <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />-->
+            android:value="${UMENG_CHANNEL_VALUE}" />
 
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".ui.PicDetailActivity"
-            android:label="@string/title_activity_pic_detail"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/AppTheme.PicDetail" >
-        </activity>
+            android:label="@string/title_activity_pic_detail" />
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
+            android:process=":DownloadingService" />
 
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="com.umeng.fb.ConversationActivity" />
         <activity
             android:name=".ui.WelcomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -89,7 +76,7 @@
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -102,16 +89,13 @@
         <activity
             android:name="com.tencent.connect.common.AssistActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.renn.rennsdk.oauth.OAuthActivity"
             android:configChanges="orientation|navigation|keyboardHidden" />
         <activity
             android:name=".ui.AboutActivity"
-            android:label="@string/title_activity_about"
-            android:parentActivityName=".ui.MainActivity" >
-        </activity>
+            android:label="@string/title_activity_about" />
         <!-- 小米推送sdk -->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
@@ -127,7 +111,7 @@
         <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 
@@ -137,14 +121,14 @@
         <receiver
             android:name="com.xiaomi.push.service.receivers.PingReceiver"
             android:exported="false"
-            android:process=":pushservice" >
+            android:process=":pushservice">
             <intent-filter>
                 <action android:name="com.xiaomi.push.PING_TIMER" />
             </intent-filter>
         </receiver>
         <receiver
             android:name=".utils.OneJokeMessageReceiver"
-            android:exported="true" >
+            android:exported="true">
 
             <!-- 这里com.xiaomi.mipushdemo.DemoMessageRreceiver改成app中定义的完整类名 -->
             <intent-filter>
@@ -157,9 +141,7 @@
 
         <activity
             android:name=".ui.MessageActivity"
-            android:label="@string/title_activity_message"
-            android:parentActivityName=".ui.MainActivity" >
-        </activity>
+            android:label="@string/title_activity_message" />
         <!-- Must declare it for Adivew SDK -->
         <service android:name="com.kyview.DownloadService" />
 
@@ -170,10 +152,8 @@
             android:value="SDK20151024100234gyduoom2dq8xm63" />
 
         <activity
-            android:parentActivityName=".ui.AboutActivity"
             android:name=".ui.AuthorActivity"
-            android:label="@string/title_activity_author" >
-        </activity>
+            android:label="@string/title_activity_author" />
     </application>
 
 </manifest>

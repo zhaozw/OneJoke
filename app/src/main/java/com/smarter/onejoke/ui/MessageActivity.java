@@ -3,20 +3,33 @@ package com.smarter.onejoke.ui;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
 import com.smarter.onejoke.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MessageActivity extends BaseActivity {
-    private ListView listView;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBar;
+    @Bind(R.id.message_list)
+    ListView listView;
     private ArrayList<HashMap<String, Object>> listItem = new ArrayList<>();
     private String jsonData;
     private SharedPreferences preferences;
@@ -27,16 +40,20 @@ public class MessageActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-        listView = (ListView)findViewById(R.id.message_list);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
-        preferences = getSharedPreferences("MESSAGE",0);
+        preferences = getSharedPreferences("MESSAGE", 0);
         editor = preferences.edit();
 
         Intent intent = getIntent();
         String pushMessage = intent.getStringExtra("PushMessage");
 
-        jsonData = preferences.getString("Message",null);
-        if (jsonData != null){
+        jsonData = preferences.getString("Message", null);
+        if (jsonData != null) {
             try {
                 parserJson(jsonData);
                 if (pushMessage != null) {
@@ -51,19 +68,19 @@ public class MessageActivity extends BaseActivity {
                 }
 
                 //生成适配器的Item和动态数组对应的元素
-                SimpleAdapter listItemAdapter = new SimpleAdapter(this,listItem,//数据源
+                SimpleAdapter listItemAdapter = new SimpleAdapter(this, listItem,//数据源
                         R.layout.item_message,//ListItem的XML实现
                         //动态数组与ImageItem对应的子项
-                        new String[] {"MessageContent", "MessageTime"},
+                        new String[]{"MessageContent", "MessageTime"},
                         //ImageItem的XML文件里面的一个ImageView,两个TextView ID
-                        new int[] {R.id.message_content,R.id.message_time});
+                        new int[]{R.id.message_content, R.id.message_time});
                 //添加并且显示
                 listView.setAdapter(listItemAdapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             if (pushMessage != null) {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
                 Date curDate = new Date(System.currentTimeMillis());//获取当前时间
@@ -80,12 +97,12 @@ public class MessageActivity extends BaseActivity {
             }
 
             //生成适配器的Item和动态数组对应的元素
-            SimpleAdapter listItemAdapter = new SimpleAdapter(this,listItem,//数据源
+            SimpleAdapter listItemAdapter = new SimpleAdapter(this, listItem,//数据源
                     R.layout.item_message,//ListItem的XML实现
                     //动态数组与ImageItem对应的子项
-                    new String[] {"MessageContent", "MessageTime"},
+                    new String[]{"MessageContent", "MessageTime"},
                     //ImageItem的XML文件里面的一个ImageView,两个TextView ID
-                    new int[] {R.id.message_content,R.id.message_time});
+                    new int[]{R.id.message_content, R.id.message_time});
 
             //添加并且显示
             listView.setAdapter(listItemAdapter);
@@ -93,31 +110,28 @@ public class MessageActivity extends BaseActivity {
         }
     }
 
-    public void buildJson(ArrayList<HashMap<String,Object>> listItem) throws JSONException
-    {
-        JSONArray json=new JSONArray();
-        for(int i=0;i<listItem.size();i++)
-        {
-            JSONObject jsonObj=new JSONObject();
+    public void buildJson(ArrayList<HashMap<String, Object>> listItem) throws JSONException {
+        JSONArray json = new JSONArray();
+        for (int i = 0; i < listItem.size(); i++) {
+            JSONObject jsonObj = new JSONObject();
             jsonObj.put("MessageContent", listItem.get(i).get("MessageContent"));
             jsonObj.put("MessageTime", listItem.get(i).get("MessageTime"));
             //把每个数据当作一对象添加到数组里
             json.put(jsonObj);
             jsonData = json.toString();
-            editor.putString("Message",jsonData);
+            editor.putString("Message", jsonData);
             editor.commit();
         }
     }
+
     // 解析JSON字符串
-    public void parserJson(String jsonData) throws JSONException
-    {
+    public void parserJson(String jsonData) throws JSONException {
         //构建JSON数组对象
-        JSONArray json1=new JSONArray(jsonData);
-        for(int i=0;i<json1.length();i++)
-        {
-            JSONObject jsonObj2=json1.optJSONObject(i);
-            String messageContent=jsonObj2.getString("MessageContent");
-            String messageTime=jsonObj2.getString("MessageTime");
+        JSONArray json1 = new JSONArray(jsonData);
+        for (int i = 0; i < json1.length(); i++) {
+            JSONObject jsonObj2 = json1.optJSONObject(i);
+            String messageContent = jsonObj2.getString("MessageContent");
+            String messageTime = jsonObj2.getString("MessageTime");
             HashMap<String, Object> map = new HashMap<>();
             map.put("MessageContent", messageContent);
             map.put("MessageTime", messageTime);

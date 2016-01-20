@@ -1,25 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="@color/white">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/logo_top"
-            android:scaleType="fitStart"
-            android:layout_marginTop="30dp"/>
-    <RelativeLayout
-        android:id="@+id/spread_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"></RelativeLayout>
-        <!--android:background="@color/dark_white">-->
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/onejoke_logo"
+        android:layout_marginTop="30dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/logo_top" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:scaleType="fitEnd"/>
+        android:scaleType="fitEnd"
+        android:src="@drawable/onejoke_logo" />
 
 </RelativeLayout>

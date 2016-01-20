@@ -4,7 +4,7 @@ package com.smarter.onejoke.ui;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.DividerItemDecoration;
 import com.smarter.onejoke.adapter.JokeAdapter;
@@ -80,25 +79,12 @@ public class JokeFragment extends Fragment {
         View jokeView = inflater.inflate(R.layout.fragment_joke, container, false);
         recyclerView = (RecyclerView) jokeView.findViewById(R.id.recycler_joke);
         floatingActionButton = (FloatingActionButton) jokeView.findViewById(R.id.fab_joke);
-        if (PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean("pref_dark_theme", false)) {
-            floatingActionButton.setColorNormal(getResources().getColor(R.color.colorPrimaryInverse));
-        } else {
-            floatingActionButton.setColorNormal(getResources().getColor(R.color.colorPrimary));
-        }
+
         refreshLayout = (SwipeRefreshLayout) jokeView.findViewById(R.id.refresh_joke);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        floatingActionButton.hide(false);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshLayout.setRefreshing(true);
-                getJokeData();
-            }
-        });
 
 
         refreshLayout.setColorSchemeResources(android.R.color.holo_red_dark,

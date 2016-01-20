@@ -13,8 +13,6 @@ public class WelcomeActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme_NoActionBar);
         setContentView(R.layout.activity_welcome);
-        mTintManager.setStatusBarDarkMode(true,this);
-        mTintManager.setStatusBarTintEnabled(false);
         jumpToMain();
 
     }

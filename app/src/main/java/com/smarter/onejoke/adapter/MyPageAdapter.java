@@ -15,6 +15,7 @@ import com.smarter.onejoke.ui.PictureFragment;
 public class MyPageAdapter extends FragmentPagerAdapter {
 
     private static final int ITEMS_NUM = 2;
+    private String[] tabTitle = {"每日笑话", "每日趣图"};
     Context context;
     JokeFragment jokeFragment = null;
     PictureFragment pictureFragment = null;
@@ -44,5 +45,10 @@ public class MyPageAdapter extends FragmentPagerAdapter {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return tabTitle[position];
     }
 }
