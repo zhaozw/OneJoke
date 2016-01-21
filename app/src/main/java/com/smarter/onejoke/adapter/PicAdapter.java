@@ -3,10 +3,12 @@ package com.smarter.onejoke.adapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -78,10 +80,16 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
         SimpleDraweeView picImage;
         @Bind(R.id.desc_text)
         TextView descText;
+        @Bind(R.id.pic_bg)
+        RelativeLayout picBg;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
+            if (PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean("pref_dark_theme", false)) {
+                picBg.setBackgroundColor(context.getResources().getColor(R.color.night_bg));
+            }
         }
     }
 }

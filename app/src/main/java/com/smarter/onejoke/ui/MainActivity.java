@@ -149,6 +149,9 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_feedback) {
+            FeedbackAgent agent = new FeedbackAgent(this);
+            agent.closeAudioFeedback();
+            agent.startFeedbackActivity();
             return true;
         } else if (id == R.id.action_about) {
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);

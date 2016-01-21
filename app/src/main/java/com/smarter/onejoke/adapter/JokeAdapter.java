@@ -1,6 +1,7 @@
 package com.smarter.onejoke.adapter;
 
 import android.app.Activity;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
  * Created by panl on 15/2/8.
  */
 public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
+
 
     private List<JokeInfo> jokeInfoList = new ArrayList<>();
     private Activity context;
@@ -62,7 +64,7 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
         this.context = context;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.time_text)
         TextView timeText;
         @Bind(R.id.share_button)
@@ -71,10 +73,16 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
         ImageButton copyButton;
         @Bind(R.id.content_joke)
         TextView contentJoke;
+        @Bind(R.id.joke_bg)
+        View jokeBg;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            if (PreferenceManager.getDefaultSharedPreferences(context)
+                    .getBoolean("pref_dark_theme", false)) {
+                jokeBg.setBackgroundColor(context.getResources().getColor(R.color.night_bg));
+            }
         }
     }
 }

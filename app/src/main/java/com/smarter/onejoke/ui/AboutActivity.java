@@ -26,18 +26,12 @@ public class AboutActivity extends BaseActivity {
     @Bind(R.id.version_text)
     TextView versionText;
 
-    @OnClick(R.id.about_author)
-    void aboutAuthorClick() {
-        Intent intent = new Intent(AboutActivity.this, AuthorActivity.class);
-        startActivity(intent);
-    }
-
     @OnClick(R.id.check_update)
     void checkUpdateClick() {
         update();
     }
 
-    @OnClick(R.id.mark_on_play)
+    @OnClick(R.id.fab_star)
     void markOnPlayClick() {
         Uri uri = Uri.parse("market://details?id=" + getPackageName());
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -58,7 +52,7 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
-        versionText.setText(BuildConfig.VERSION_NAME);
+        versionText.setText("版本号："+BuildConfig.VERSION_NAME);
 
     }
 
