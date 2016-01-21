@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+    >
 
 
-    <com.facebook.drawee.view.SimpleDraweeView
+    <ImageView
         android:id="@+id/pic_detail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        fresco:actualImageScaleType="fitCenter"
-        fresco:placeholderImage="@mipmap/pic_default"
-        fresco:placeholderImageScaleType="fitCenter"/>
+        android:src="@mipmap/pic_default"
+        android:contentDescription="@string/action_about"
+        android:scaleType="fitCenter"/>
 
     <com.smarter.onejoke.customview.ExpandableTextView
         android:id="@+id/content_pic_text"

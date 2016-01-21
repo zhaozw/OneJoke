@@ -3,12 +3,8 @@ package com.smarter.onejoke;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
-import com.facebook.cache.disk.DiskCacheConfig;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.thinkland.sdk.android.JuheSDKInitializer;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
@@ -55,7 +51,6 @@ public class MyApplication extends Application {
         };
         Logger.setLogger(this, newLogger);
 
-        frescoConfig();
     }
 
     private boolean shouldInit() {
@@ -69,29 +64,6 @@ public class MyApplication extends Application {
             }
         }
         return false;
-    }
-
-    private void frescoConfig(){
-        DiskCacheConfig diskCacheConfig =  DiskCacheConfig.newBuilder()
-                .setBaseDirectoryPath(Environment.getExternalStorageDirectory().getAbsoluteFile())//缓存图片基路径
-                .setBaseDirectoryName("onejoke")//文件夹名
-                .build();
-
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-                //.setBitmapMemoryCacheParamsSupplier(bitmapCacheParamsSupplier)
-                //.setCacheKeyFactory(cacheKeyFactory)
-                //.setEncodedMemoryCacheParamsSupplier(encodedCacheParamsSupplier)
-                //.setExecutorSupplier(executorSupplier)
-                //.setImageCacheStatsTracker(imageCacheStatsTracker)
-                .setMainDiskCacheConfig(diskCacheConfig)
-                //.setMemoryTrimmableRegistry(memoryTrimmableRegistry)
-                //.setNetworkFetchProducer(networkFetchProducer)
-                //.setPoolFactory(poolFactory)
-                //.setProgressiveJpegConfig(progressiveJpegConfig)
-                //.setRequestListeners(requestListeners)
-                //.setSmallImageDiskCacheConfig(smallImageDiskCacheConfig)
-                .build();
-        Fresco.initialize(this, config);
     }
     public static Context getContext(){
         return context;
