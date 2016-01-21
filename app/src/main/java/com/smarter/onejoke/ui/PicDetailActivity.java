@@ -42,9 +42,6 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
     private AdViewStream viewStream;
     private int count = 0;
 
-    private final static String weixinAppID = "wx006e00e8f84351fb";
-    private final static String weixinAppSecret = "1f115f46a8e3fc77a3a0d844d717caaf";
-
     final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share");
 
 
