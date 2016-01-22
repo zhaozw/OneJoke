@@ -44,14 +44,14 @@ public class PicPageAdapter extends PagerAdapter {
         View picDetailView = LayoutInflater.from(context).inflate(R.layout.item_pic_detail, container, false);
         final ImageView picDetailImage = (ImageView) picDetailView.findViewById(R.id.pic_detail_image);
         ExpandableTextView contentPicText = (ExpandableTextView) picDetailView.findViewById(R.id.content_pic_text);
-        contentPicText.setText(picInfoList.get(position).getDescription());
+        contentPicText.setText(picInfoList.get(position).getContent());
         contentPicText.setBackgroundColor(Color.argb(60, 33, 150, 243));
-        if (picInfoList.get(position).getPicUrl().endsWith(".gif")){
-            Glide.with(context).load(picInfoList.get(position).getPicUrl()).asGif()
+        if (picInfoList.get(position).getUrl().endsWith(".gif")){
+            Glide.with(context).load(picInfoList.get(position).getUrl()).asGif()
                     .placeholder(R.mipmap.pic_default)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(picDetailImage);
         }else {
-            Glide.with(context).load(picInfoList.get(position).getPicUrl()).asBitmap()
+            Glide.with(context).load(picInfoList.get(position).getUrl()).asBitmap()
                     .placeholder(R.mipmap.pic_default).into(new SimpleTarget<Bitmap>() {
                 @Override
                 public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {

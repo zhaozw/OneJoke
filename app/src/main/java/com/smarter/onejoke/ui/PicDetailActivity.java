@@ -123,7 +123,7 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_share) {
-            ShareUtils.shareToOther(this, picInfoList.get(position).getDescription(), picInfoList.get(position).getPicUrl());
+            ShareUtils.shareToOther(this, picInfoList.get(position).getContent(), picInfoList.get(position).getUrl());
             return true;
         } else if (id == android.R.id.home) {
             onBackPressed();

@@ -7,35 +7,41 @@ import java.io.Serializable;
  */
 public class JokeInfo implements Serializable {
 
-    private String contents;
-    private long unixTime;
-    private String updateTime;
-    public JokeInfo() {
+    private String content;
+    private String hashId;
+    private String updatetime;
+    private long unixtime;
 
+    public String getContent() {
+        return content;
     }
 
-    public String getContents() {
-        return contents;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public void setContents(String contents) {
-        this.contents = contents;
+    public String getHashId() {
+        return hashId;
     }
 
-    public long getUnixTime() {
-        return unixTime;
+    public void setHashId(String hashId) {
+        this.hashId = hashId;
     }
 
-    public void setUnixTime(long unixTime) {
-        this.unixTime = unixTime;
+    public String getUpdatetime() {
+        return updatetime;
     }
 
-    public String getUpdateTime() {
-        return updateTime;
+    public void setUpdatetime(String updatetime) {
+        this.updatetime = updatetime;
     }
 
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
+    public long getUnixtime() {
+        return unixtime;
+    }
+
+    public void setUnixtime(long unixtime) {
+        this.unixtime = unixtime;
     }
 
 

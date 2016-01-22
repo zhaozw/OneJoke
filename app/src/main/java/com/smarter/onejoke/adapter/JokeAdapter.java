@@ -42,18 +42,18 @@ public class JokeAdapter extends RecyclerView.Adapter<JokeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.contentJoke.setText(jokeInfoList.get(position).getContents());
-        holder.timeText.setText(jokeInfoList.get(position).getUpdateTime());
+        holder.contentJoke.setText(jokeInfoList.get(position).getContent());
+        holder.timeText.setText(jokeInfoList.get(position).getUpdatetime());
         holder.shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareUtils.shareToOther(context, jokeInfoList.get(holder.getAdapterPosition()).getContents(), null);
+                ShareUtils.shareToOther(context, jokeInfoList.get(holder.getAdapterPosition()).getContent(), null);
             }
         });
         holder.copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AndroidUtils.CopyText(context, jokeInfoList.get(holder.getAdapterPosition()).getContents());
+                AndroidUtils.CopyText(context, jokeInfoList.get(holder.getAdapterPosition()).getContent());
             }
         });
 

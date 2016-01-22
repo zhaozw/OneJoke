@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
  */
 public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
-
     private List<PicInfo> picInfoList = new ArrayList<>();
     private Activity context;
     private int lastPosition;
@@ -55,13 +54,14 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.descText.setText(picInfoList.get(position).getDescription());
-        if (picInfoList.get(position).getPicUrl().endsWith(".gif")) {
-            Glide.with(context).load(picInfoList.get(position).getPicUrl()).asGif()
+        holder.descText.setText(picInfoList.get(position).getContent());
+        holder.timeText.setText(picInfoList.get(position).getUpdatetime());
+        if (picInfoList.get(position).getUrl().endsWith(".gif")) {
+            Glide.with(context).load(picInfoList.get(position).getUrl()).asGif()
                     .placeholder(R.mipmap.pic_default)
                     .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.picImage);
         } else {
-            Glide.with(context).load(picInfoList.get(position).getPicUrl())
+            Glide.with(context).load(picInfoList.get(position).getUrl())
                     .placeholder(R.mipmap.pic_default).into(holder.picImage);
         }
 
@@ -90,6 +90,8 @@ public class PicAdapter extends RecyclerView.Adapter<PicAdapter.ViewHolder> {
         TextView descText;
         @Bind(R.id.pic_bg)
         RelativeLayout picBg;
+        @Bind(R.id.time_text)
+        TextView timeText;
 
         public ViewHolder(View itemView) {
             super(itemView);
