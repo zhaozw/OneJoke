@@ -44,7 +44,7 @@ public class MessageActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         preferences = getSharedPreferences("MESSAGE", 0);
         editor = preferences.edit();

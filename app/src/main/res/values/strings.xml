@@ -19,6 +19,7 @@
     <string name="title_activity_ad_view">AdViewActivity</string>
     <string name="title_activity_author">关于开发者</string>
     <string name="action_switch">切换模式</string>
+    <string name="action_save">保存</string>
 
 
 </resources>

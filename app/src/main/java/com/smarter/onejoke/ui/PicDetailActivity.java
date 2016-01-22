@@ -1,8 +1,10 @@
 package com.smarter.onejoke.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import com.kyview.interfaces.AdViewInterface;
 import com.smarter.onejoke.R;
 import com.smarter.onejoke.adapter.PicPageAdapter;
 import com.smarter.onejoke.model.PicInfo;
+import com.smarter.onejoke.utils.FileUtil;
 import com.smarter.onejoke.utils.ShareUtils;
 import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
@@ -75,7 +78,6 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-
         Intent intent = getIntent();
         position = intent.getIntExtra("position", 0);
         picInfoList = (List) intent.getCharSequenceArrayListExtra("picInfoList");
@@ -109,28 +111,56 @@ public class PicDetailActivity extends BaseActivity implements AdViewInterface {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_pic_detail, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_share) {
             ShareUtils.shareToOther(this, picInfoList.get(position).getContent(), picInfoList.get(position).getUrl());
             return true;
         } else if (id == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (id == R.id.action_save) {
+            if (FileUtil.isSDCardEnable()) {
+                Snackbar.make(viewPager, "正在下载", Snackbar.LENGTH_SHORT).show();
+                saveGif();
+            } else {
+                Snackbar.make(viewPager, "SD卡不存在", Snackbar.LENGTH_SHORT).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void saveGif() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String path = picInfoList.get(position).getUrl();
+                try {
+                    final Uri uri = FileUtil.saveFileToSDCard(path, path.substring(path.length() - 10, path.length()));
+                    if (uri != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent scannerIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                                PicDetailActivity.this.sendBroadcast(scannerIntent);
+                                Snackbar.make(viewPager, "保存成功", Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
+
     }
 
     @Override

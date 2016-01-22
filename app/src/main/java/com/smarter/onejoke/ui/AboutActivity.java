@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smarter.onejoke.BuildConfig;
 import com.smarter.onejoke.R;
+import com.smarter.onejoke.utils.ShareUtils;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -52,7 +54,7 @@ public class AboutActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         if (actionBar != null) actionBar.setDisplayHomeAsUpEnabled(true);
-        versionText.setText("版本号："+BuildConfig.VERSION_NAME);
+        versionText.setText("Version："+BuildConfig.VERSION_NAME);
 
     }
 
@@ -81,13 +83,22 @@ public class AboutActivity extends BaseActivity {
         UmengUpdateAgent.update(AboutActivity.this);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about,menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //noinspection SimplifiableIfStatement
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.action_share:
+                ShareUtils.shareToOther(this,"一个令人开心的软件",null);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
