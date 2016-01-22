@@ -132,7 +132,8 @@ public class PictureFragment extends Fragment implements JokeClient.DataReceived
 
     @Override
     public void onDataReceived(String json) {
-        refreshPic.setRefreshing(false);
+        if (refreshPic != null)
+            refreshPic.setRefreshing(false);
         if (picFlag == 0) {
             picInfoList.clear();
             try {
@@ -154,7 +155,8 @@ public class PictureFragment extends Fragment implements JokeClient.DataReceived
 
     @Override
     public void onDataFiled(String error) {
-        refreshPic.setRefreshing(false);
+        if (refreshPic != null)
+            refreshPic.setRefreshing(false);
         Snackbar.make(recyclerPic, error, Snackbar.LENGTH_SHORT).show();
     }
 

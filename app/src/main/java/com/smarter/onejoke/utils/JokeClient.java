@@ -16,12 +16,14 @@ public class JokeClient {
         JuheData.executeWithAPI(context, 95, url, JuheData.GET, parameters, new DataCallBack() {
             @Override
             public void onSuccess(int i, String s) {
-               listener.onDataReceived(s);
+                listener.onDataReceived(s);
             }
+
             @Override
             public void onFinish() {
 
             }
+
             @Override
             public void onFailure(int i, String s, Throwable throwable) {
                 listener.onDataFiled(s);
@@ -29,8 +31,9 @@ public class JokeClient {
         });
     }
 
-    public interface DataReceivedListener{
+    public interface DataReceivedListener {
         void onDataReceived(String json);
+
         void onDataFiled(String error);
     }
 

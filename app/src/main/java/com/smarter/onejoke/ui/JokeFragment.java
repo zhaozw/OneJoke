@@ -129,7 +129,8 @@ public class JokeFragment extends Fragment implements JokeClient.DataReceivedLis
 
     @Override
     public void onDataReceived(String json) {
-        refreshJoke.setRefreshing(false);
+        if (refreshJoke != null)
+            refreshJoke.setRefreshing(false);
         if (jokeFlag == 0) {
             jokeInfoList.clear();
             try {
@@ -137,7 +138,7 @@ public class JokeFragment extends Fragment implements JokeClient.DataReceivedLis
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            SPUtils.saveFirstPageJoke(getContext(),jokeInfoList.subList(0,20));
+            SPUtils.saveFirstPageJoke(getContext(), jokeInfoList.subList(0, 20));
             jokeAdapter.notifyDataSetChanged();
         } else {
             try {
@@ -152,14 +153,15 @@ public class JokeFragment extends Fragment implements JokeClient.DataReceivedLis
     private List<JokeInfo> parseJson(String json) throws JSONException {
         String result = new JSONObject(json).getString("result");
         String data = new JSONObject(result).getString("data");
-        List<JokeInfo> models = JSON.parseArray(data,JokeInfo.class);
+        List<JokeInfo> models = JSON.parseArray(data, JokeInfo.class);
         if (models == null) return new ArrayList<>();
         return models;
     }
 
     @Override
     public void onDataFiled(String error) {
-        refreshJoke.setRefreshing(false);
+        if (refreshJoke != null)
+            refreshJoke.setRefreshing(false);
         Snackbar.make(recyclerJoke, error, Snackbar.LENGTH_SHORT).show();
     }
 
