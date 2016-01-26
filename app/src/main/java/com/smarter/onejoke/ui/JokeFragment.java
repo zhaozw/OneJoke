@@ -115,6 +115,7 @@ public class JokeFragment extends Fragment implements JokeClient.DataReceivedLis
     }
 
     private void getMoreData() {
+        
         jokeFlag = 1;
         if (currentTime != jokeInfoList.get(jokeInfoList.size() - 1).getUnixtime()) {
             currentTime = jokeInfoList.get(jokeInfoList.size() - 1).getUnixtime();

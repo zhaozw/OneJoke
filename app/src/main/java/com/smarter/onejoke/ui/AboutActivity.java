@@ -35,6 +35,7 @@ public class AboutActivity extends BaseActivity {
 
     @OnClick(R.id.fab_star)
     void markOnPlayClick() {
+
         Uri uri = Uri.parse("market://details?id=" + getPackageName());
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
